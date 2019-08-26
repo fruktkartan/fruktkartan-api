@@ -7,7 +7,9 @@ const server = restify.createServer()
 server.use(restify.plugins.queryParser({
   mapParams: true
 }))
-server.use(restify.plugins.bodyParser())
+server.use(restify.plugins.bodyParser({
+  mapParams: true
+}))
 
 server.use((req, res, next) => {
   res.charSet("utf-8")
@@ -31,6 +33,10 @@ server.get({
 server.get({
   path: "/tree/:key",
 }, require(__dirname + "/routes/v1/tree.js"))
+
+server.put({
+  path: "/tree",
+}, require(__dirname + "/routes/v1/put-tree.js"))
 
 server.listen(process.env.PORT || 8080, function() {
   // eslint-disable-next-line no-console

@@ -22,7 +22,7 @@ let endpoint = (req, res, next) => {
   }
 
   client.connect()
-  let query = "SELECT ssm_key, description, img, type, lat, lon FROM trees;"
+  let query = "SELECT ssm_key, description, img, type, lat, lon FROM trees WHERE deleted_at IS NULL;"
   client.query(query, (err, data) => {
     if (err) {
       return next(new InternalServerError(`Error connecting to database: ${err}`))

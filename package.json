@@ -12,7 +12,8 @@
     "pg": "^7.12.1",
     "pug": "^2.0.4",
     "restify": "^8.4.0",
-    "restify-errors": "^8.0.1"
+    "restify-errors": "^8.0.1",
+    "murmurhash": "0.0.2"
   },
   "devDependencies": {
     "eslint": "^6.2.2"

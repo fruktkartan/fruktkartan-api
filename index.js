@@ -4,12 +4,6 @@ const restify = require("restify")
 const {renderFile} = require("pug")
 
 const server = restify.createServer()
-server.use(restify.plugins.queryParser({
-  mapParams: true
-}))
-server.use(restify.plugins.bodyParser({
-  mapParams: true
-}))
 
 server.use((req, res, next) => {
   res.charSet("utf-8")
@@ -26,6 +20,10 @@ server.get("/public/*", restify.plugins.serveStatic({
   directory: __dirname,
 }))
 
+server.use(restify.plugins.queryParser({
+  mapParams: true
+}))
+
 server.get({
   path: "/trees",
 }, require(__dirname + "/routes/v1/trees.js"))
@@ -34,9 +32,19 @@ server.get({
   path: "/tree/:key",
 }, require(__dirname + "/routes/v1/tree.js"))
 
+server.use(restify.plugins.bodyParser({
+  mapParams: true
+}))
+
 server.put({
   path: "/tree",
 }, require(__dirname + "/routes/v1/put-tree.js"))
+
+/*
+server.delete({
+  path: "/tree/:key",
+}, require(__dirname + "/routes/v1/delete-tree.js"))
+*/
 
 server.listen(process.env.PORT || 8080, function() {
   // eslint-disable-next-line no-console

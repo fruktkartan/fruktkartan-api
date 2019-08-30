@@ -1,5 +1,5 @@
-const {Client} = require('pg')
-const {InvalidArgumentError, InternalServerError} = require('restify-errors')
+const {Client} = require("pg")
+const {InternalServerError} = require("restify-errors")
 
 
 let endpoint = (req, res, next) => {

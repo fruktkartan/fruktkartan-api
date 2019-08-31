@@ -1,10 +1,19 @@
 // ssm_key, description, img, type, lat, lon
 
 const restify = require("restify")
+const corsMiddleware = require('restify-cors-middleware');
 const {renderFile} = require("pug")
+
 
 const server = restify.createServer()
 
+// Headers
+const cors = corsMiddleware({
+  preflightMaxAge: 5,
+  origins: ["http://localhost:8080"],
+});
+server.pre(cors.preflight)
+server.use(cors.actual)
 server.use((req, res, next) => {
   res.charSet("utf-8")
   return next()

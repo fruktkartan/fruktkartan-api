@@ -3,6 +3,7 @@
 const restify = require("restify")
 const corsMiddleware = require("restify-cors-middleware")
 const {renderFile} = require("pug")
+require('dotenv').config()
 
 
 const server = restify.createServer()

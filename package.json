@@ -9,6 +9,7 @@
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^8.1.0",
     "murmurhash": "0.0.2",
     "pg": "^7.12.1",
     "pug": "^2.0.4",

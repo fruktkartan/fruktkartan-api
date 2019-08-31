@@ -39,7 +39,7 @@ let endpoint = (req, res, next) => {
   */
 
   client.connect()
-  let query = "INSERT INTO trees (ssm_key, description, lat, lon, added_by) VALUES $1, $2, $3, $4, $5"
+  let query = "INSERT INTO trees (ssm_key, description, lat, lon, added_by) VALUES ($1, $2, $3, $4, $5)"
   client.query(query, [key, desc, lat, lon, user_ip], (err) => {
     if (err) {
       return next(new InternalServerError(`Error connecting to database: ${err}`))

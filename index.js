@@ -10,8 +10,12 @@ const server = restify.createServer()
 // Headers
 const cors = corsMiddleware({
   preflightMaxAge: 5,
-  origins: ["http://localhost:8080"],
-});
+  origins: [
+    "http://localhost:8080",
+    "http://fruktkartan.se",
+    "https://fruktkartan.se",
+  ],
+})
 server.pre(cors.preflight)
 server.use(cors.actual)
 server.use((req, res, next) => {

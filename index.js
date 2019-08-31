@@ -20,6 +20,10 @@ server.get("/public/*", restify.plugins.serveStatic({
   directory: __dirname,
 }))
 
+server.get({
+  path: "/edits",
+}, require(__dirname + "/routes/v1/edits.js"))
+
 server.use(restify.plugins.queryParser({
   mapParams: true
 }))
@@ -40,11 +44,9 @@ server.put({
   path: "/tree",
 }, require(__dirname + "/routes/v1/put-tree.js"))
 
-/*
-server.delete({
+server.del({
   path: "/tree/:key",
 }, require(__dirname + "/routes/v1/delete-tree.js"))
-*/
 
 server.listen(process.env.PORT || 8080, function() {
   // eslint-disable-next-line no-console

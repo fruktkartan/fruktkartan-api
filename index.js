@@ -1,7 +1,7 @@
 // ssm_key, description, img, type, lat, lon
 
 const restify = require("restify")
-const corsMiddleware = require('restify-cors-middleware');
+const corsMiddleware = require("restify-cors-middleware")
 const {renderFile} = require("pug")
 
 

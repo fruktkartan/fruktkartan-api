@@ -29,8 +29,8 @@ let endpoint = (req, res, next) => {
   const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
   
   const s3Params = s3Credentials({
-    bucket: "fruktkartan",
-    region: "eu-north-1",
+    bucket: process.env.S3_BUCKET,
+    region: process.env.S3_REGION,
     accessKey: process.env.S3_ACCESS_KEY,
     secretKey: process.env.S3_SECRET_KEY,
   }, {

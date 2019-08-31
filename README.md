@@ -12,14 +12,12 @@ npm install
 
 Set the environment variable DATABASE_URL to the Postgres URL before starting the service.
 
-### Linting
-
-```sh
-eslint .
-```
 
 ### Testing
 
+```sh
+npm test
+```
 
 ### To do
 

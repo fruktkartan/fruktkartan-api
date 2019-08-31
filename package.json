@@ -4,7 +4,7 @@
   "description": "Fruktkartan API",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/eslint/bin/eslint.js ."
+    "test": "node_modules/eslint/bin/eslint.js . && node_modules/mocha/bin/mocha test"
   },
   "author": "Leo Wallentin",
   "license": "MIT",
@@ -18,6 +18,8 @@
     "restify-errors": "^8.0.1"
   },
   "devDependencies": {
-    "eslint": "^6.3.0"
+    "eslint": "^6.3.0",
+    "mocha": "^6.2.0",
+    "supertest": "^4.0.2"
   }
 }

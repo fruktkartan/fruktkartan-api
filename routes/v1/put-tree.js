@@ -23,7 +23,7 @@ let endpoint = (req, res, next) => {
   const lat = parseFloat(req.params.lat)
   const lon = parseFloat(req.params.lon)
   const desc = req.params.desc || ""
-  const key = murmurhash.v3(req.params.lat + req.params.lon + Date.now())
+  const key = murmurhash.v3("" + req.params.lat + req.params.lon, Date.now())
   const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
   
   /*

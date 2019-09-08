@@ -14,6 +14,11 @@ module.exports = {
       "plugin:mocha/recommended"
     ],
     "rules": {
+        "mocha/max-top-level-suites": [
+          "warn", {
+            limit: 5
+          }
+        ],
         "indent": [
             "error",
             2,

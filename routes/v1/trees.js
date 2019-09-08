@@ -28,6 +28,8 @@ let endpoint = (req, res, next) => {
       return next(new InternalServerError(`Error connecting to database: ${err}`))
     }
     let trees = data.rows
+      // We should use PostGIS to make a more efficient (and correct) query here.
+      // Waiting Heroku to release it (it's in beta now, and only available through paid plans)
       .filter(x => (
         bbox[0] < x.lat &&
         x.lat < bbox[2] &&
@@ -40,6 +42,7 @@ let endpoint = (req, res, next) => {
         lon: x.lon,
         desc: (x.description !== ""),
         img: (x.img !== ""),
+        type: x.type,
       }))
     client.end()
     res.json(trees)

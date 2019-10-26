@@ -16,6 +16,7 @@ const cors = corsMiddleware({
     "http://fruktkartan.se",
     "https://fruktkartan.se",
     "https://fruktkartan.netlify.com",
+    "https://quite--fruktkartan.netlify.com",
   ],
 })
 server.pre(cors.preflight)

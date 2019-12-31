@@ -39,7 +39,7 @@ let endpoint = (req, res, next) => {
       .map(x => ({
         key: x.ssm_key.trim(),
         lat: x.lat,
-        lon: x.lon,
+        lng: x.lon,
         desc: (x.description !== ""),
         img: (x.img !== ""),
         type: x.type,

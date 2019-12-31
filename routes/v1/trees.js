@@ -36,6 +36,7 @@ let endpoint = (req, res, next) => {
         bbox[1] < x.lon &&
         x.lon < bbox[3]
       ))
+      .filter(x => x.type)
       .map(x => ({
         key: x.ssm_key.trim(),
         lat: x.lat,

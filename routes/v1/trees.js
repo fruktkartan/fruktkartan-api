@@ -42,7 +42,7 @@ let endpoint = (req, res, next) => {
         lng: x.lon,
         desc: (x.description !== ""),
         img: (x.img !== ""),
-        type: x.type,
+        type: x.type.trim(),
       }))
     client.end()
     res.json(trees)

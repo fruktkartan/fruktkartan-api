@@ -14,9 +14,9 @@
     "murmurhash": "0.0.2",
     "pg": "^7.12.1",
     "pug": "^2.0.4",
-    "restify": "^8.4.0",
+    "restify": "^8.5.1",
     "restify-cors-middleware": "^1.1.1",
-    "restify-errors": "^8.0.1"
+    "restify-errors": "^8.0.2"
   },
   "devDependencies": {
     "eslint": "^6.3.0",

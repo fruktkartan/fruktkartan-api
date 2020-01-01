@@ -17,7 +17,11 @@ let endpoint = (req, res, next) => {
     }
     let tree = data.rows[0]
     client.end()
-    res.json(tree)
+    res.json({
+      img: `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${tree.img}`,
+      description: tree.description,
+      type: tree.type.trim()
+    })
     return next()
   })
 }

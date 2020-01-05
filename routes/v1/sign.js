@@ -3,7 +3,6 @@
   */
 const {S3} = require("aws-sdk")
 
-
 module.exports = (req, res, next) => {
   const s3 = new S3()
   const fileName = req.query["file-name"]
@@ -25,5 +24,4 @@ module.exports = (req, res, next) => {
     }
     res.json(returnData)
   })
-
 }

@@ -1,9 +1,7 @@
 const {Client} = require("pg")
 const {InvalidArgumentError, InternalServerError} = require("restify-errors")
 
-
 let endpoint = (req, res, next) => {
-  
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -49,6 +47,5 @@ let endpoint = (req, res, next) => {
     res.json(trees)
     return next()
   })
-  
 }
 module.exports = endpoint

@@ -1,6 +1,6 @@
 /**
  * Code adapted from this article by Leonid Shevtsov:
- * https://leonid.shevtsov.me/post/demystifying-s3-browser-upload/  
+ * https://leonid.shevtsov.me/post/demystifying-s3-browser-upload/
  *
  */
 const crypto = require("crypto")

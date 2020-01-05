@@ -5,9 +5,7 @@ const validTreeTypes = require("./validTreeTypes.json")
 const {isValidCoords} = require("./utils.js")
 const {s3Credentials} = require("./s3.js")
 
-
 let endpoint = (req, res, next) => {
-  
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -20,14 +18,14 @@ let endpoint = (req, res, next) => {
     return next(new InvalidArgumentError(`${req.params.type} is not a valid tree type.`))
   }
   if (!isValidCoords(req.params.lat, req.params.lon)) {
-    return next(new InvalidArgumentError("Invalid coordinates"))    
+    return next(new InvalidArgumentError("Invalid coordinates"))
   }
   const lat = parseFloat(req.params.lat)
   const lon = parseFloat(req.params.lon)
   const desc = req.params.desc || ""
   const key = murmurhash.v3("" + req.params.lat + req.params.lon, Date.now())
   const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
-  
+
   const s3Params = s3Credentials({
     bucket: process.env.S3_BUCKET,
     region: process.env.S3_REGION,

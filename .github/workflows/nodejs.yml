@@ -18,3 +18,8 @@ jobs:
         npm test
       env:
         CI: true
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+        S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+        S3_BUCKET: fruktkartan
+        S3_REGION: eu-north-1

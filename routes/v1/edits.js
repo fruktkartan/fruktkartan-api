@@ -2,6 +2,9 @@ const {Client} = require("pg")
 const {InternalServerError} = require("restify-errors")
 
 let endpoint = (req, res, next) => {
+  
+  let onlyDeleted = req.params.deleted ? true : false
+  
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -9,6 +12,9 @@ let endpoint = (req, res, next) => {
 
   client.connect()
   let query = "SELECT ssm_key, description, img, type, lat, lon, deleted_at, deleted_by, added_at, added_by FROM trees;"
+  if (onlyDeleted) {
+    query = "SELECT ssm_key, description, img, type, lat, lon, deleted_at, deleted_by, added_at, added_by FROM trees WHERE deleted_at IS NOT NULL;"
+  }
   client.query(query, (err, data) => {
     if (err) {
       return next(new InternalServerError(`Error connecting to database: ${err}`))

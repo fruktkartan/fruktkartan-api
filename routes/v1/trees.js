@@ -1,5 +1,6 @@
 const {Client} = require("pg")
 const {InvalidArgumentError, InternalServerError} = require("restify-errors")
+const groupMap = require("./tree-group-map.json")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -42,6 +43,7 @@ let endpoint = (req, res, next) => {
         desc: (x.description !== ""),
         img: (x.img !== ""),
         type: x.type.trim(),
+        group: groupMap[x.type.trim()] || "tree",
       }))
     client.end()
     res.json(trees)

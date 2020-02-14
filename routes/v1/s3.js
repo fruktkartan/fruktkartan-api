@@ -13,11 +13,11 @@ const crypto = require("crypto")
 // * secretKey
 function s3Credentials(config, params) {
   if (typeof params.contentType === "undefined") {
-    params.contentType  = "image/jpeg"
+    params.contentType = "image/jpeg"
   }
   return {
     endpoint_url: "https://" + config.bucket + ".s3.amazonaws.com",
-    params: s3Params(config, params)
+    params: s3Params(config, params),
   }
 }
 
@@ -35,7 +35,7 @@ function s3Params(config, params) {
     "x-amz-algorithm": "AWS4-HMAC-SHA256",
     "x-amz-credential": credential,
     "x-amz-date": dateString() + "T000000Z",
-    "x-amz-signature": s3UploadSignature(config, policyBase64)
+    "x-amz-signature": s3UploadSignature(config, policyBase64),
   }
 }
 
@@ -45,14 +45,19 @@ function dateString() {
 }
 
 function amzCredential(config) {
-  return [config.accessKey, dateString(), config.region, "s3/aws4_request"].join("/")
+  return [
+    config.accessKey,
+    dateString(),
+    config.region,
+    "s3/aws4_request",
+  ].join("/")
 }
 
 // Constructs the policy
 function s3UploadPolicy(config, params, credential) {
   return {
     // 5 minutes into the future
-    expiration: new Date((new Date).getTime() + (5 * 60 * 1000)).toISOString(),
+    expiration: new Date(new Date().getTime() + 5 * 60 * 1000).toISOString(),
     conditions: [
       { bucket: config.bucket },
       { key: params.filename },
@@ -61,11 +66,11 @@ function s3UploadPolicy(config, params, credential) {
       // Optionally control content type and file size
       // A content-type clause is required (even if it's all-permissive)
       // so that the uploader can specify a content-type for the file
-      ["starts-with", "$Content-Type",  ""],
+      ["starts-with", "$Content-Type", ""],
       ["content-length-range", 0, 1000],
       { "x-amz-algorithm": "AWS4-HMAC-SHA256" },
       { "x-amz-credential": credential },
-      { "x-amz-date": dateString() + "T000000Z" }
+      { "x-amz-date": dateString() + "T000000Z" },
     ],
   }
 }
@@ -85,4 +90,4 @@ function s3UploadSignature(config, policyBase64) {
   return hmac(signingKey, policyBase64).toString("hex")
 }
 
-module.exports = {s3Credentials}
+module.exports = { s3Credentials }

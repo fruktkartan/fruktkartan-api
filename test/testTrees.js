@@ -3,7 +3,6 @@ const app = require("../index")
 const assert = require("assert")
 const request = require("supertest")
 
-
 describe("Calling trees", function() {
   it("should return a long list of trees", function(done) {
     request(app)

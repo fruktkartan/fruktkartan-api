@@ -1,9 +1,13 @@
-const {Client} = require("pg")
-const {InvalidArgumentError, MissingParameterError, InternalServerError} = require("restify-errors")
+const { Client } = require("pg")
+const {
+  InvalidArgumentError,
+  MissingParameterError,
+  InternalServerError,
+} = require("restify-errors")
 const murmurhash = require("murmurhash")
 const validTreeTypes = require("./validTreeTypes.json")
-const {isValidCoords} = require("./utils.js")
-const {s3Credentials} = require("./s3.js")
+const { isValidCoords } = require("./utils.js")
+const { s3Credentials } = require("./s3.js")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -12,35 +16,47 @@ let endpoint = (req, res, next) => {
   })
 
   if (["lat", "lon", "type"].some(x => !(x in req.params))) {
-    return next(new MissingParameterError("Missing parameter! lat, lon and type are all required"))
+    return next(
+      new MissingParameterError(
+        "Missing parameter! lat, lon and type are all required"
+      )
+    )
   }
   if (!validTreeTypes.includes(req.params.type)) {
-    return next(new InvalidArgumentError(`${req.params.type} is not a valid tree type.`))
+    return next(
+      new InvalidArgumentError(`${req.params.type} is not a valid tree type.`)
+    )
   }
   if (!isValidCoords(req.params.lat, req.params.lon)) {
     return next(new InvalidArgumentError("Invalid coordinates"))
   }
   const lat = parseFloat(req.params.lat)
   const lon = parseFloat(req.params.lon)
-  const type = req.params.type  // Do some validation here
+  const type = req.params.type // Do some validation here
   const desc = req.params.desc || ""
   const key = murmurhash.v3("" + req.params.lat + req.params.lon, Date.now())
   const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
 
-  const s3Params = s3Credentials({
-    bucket: process.env.S3_BUCKET,
-    region: process.env.S3_REGION,
-    accessKey: process.env.S3_ACCESS_KEY,
-    secretKey: process.env.S3_SECRET_KEY,
-  }, {
-    filename: key + ".jpg"
-  })
+  const s3Params = s3Credentials(
+    {
+      bucket: process.env.S3_BUCKET,
+      region: process.env.S3_REGION,
+      accessKey: process.env.S3_ACCESS_KEY,
+      secretKey: process.env.S3_SECRET_KEY,
+    },
+    {
+      filename: key + ".jpg",
+    }
+  )
 
   client.connect()
-  let query = "INSERT INTO trees (ssm_key, description, lat, lon, type, added_by) VALUES ($1, $2, $3, $4, $5, $6)"
-  client.query(query, [key, desc, lat, lon, type, user_ip], (err) => {
+  let query =
+    "INSERT INTO trees (ssm_key, description, lat, lon, type, added_by) VALUES ($1, $2, $3, $4, $5, $6)"
+  client.query(query, [key, desc, lat, lon, type, user_ip], err => {
     if (err) {
-      return next(new InternalServerError(`Error connecting to database: ${err}`))
+      return next(
+        new InternalServerError(`Error connecting to database: ${err}`)
+      )
     }
     res.json({
       key,

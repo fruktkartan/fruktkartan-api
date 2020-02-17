@@ -4,7 +4,8 @@
   "description": "Fruktkartan API",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/eslint/bin/eslint.js . && node_modules/mocha/bin/mocha test"
+    "test": "node_modules/eslint/bin/eslint.js . && node_modules/mocha/bin/mocha test",
+    "lint": "node_modules/eslint/bin/eslint.js --fix ."
   },
   "author": "Leo Wallentin",
   "license": "MIT",
@@ -20,8 +21,11 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-mocha": "^6.2.2",
+    "eslint-plugin-prettier": "^3.1.2",
     "mocha": "^7.0.1",
+    "prettier": "1.19.1",
     "supertest": "^4.0.2"
   }
 }

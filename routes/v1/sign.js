@@ -1,7 +1,7 @@
 /**
-  * Endpoint for retrieving temporary credentials for uploading an image to Amazon S3
-  */
-const {S3} = require("aws-sdk")
+ * Endpoint for retrieving temporary credentials for uploading an image to Amazon S3
+ */
+const { S3 } = require("aws-sdk")
 
 module.exports = (req, res, next) => {
   const s3 = new S3()
@@ -15,7 +15,11 @@ module.exports = (req, res, next) => {
 
   s3.getSignedUrl("putObject", s3Params, (err, data) => {
     if (err) {
-      res.status(500).send(`Något gick snett när vi försökte skaffa en tillfällig uppladdningsnyckel: ${err}`)
+      res
+        .status(500)
+        .send(
+          `Något gick snett när vi försökte skaffa en tillfällig uppladdningsnyckel: ${err}`
+        )
       return
     }
     const returnData = {

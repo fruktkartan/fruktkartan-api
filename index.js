@@ -2,9 +2,8 @@
 
 const restify = require("restify")
 const corsMiddleware = require("restify-cors-middleware")
-const {renderFile} = require("pug")
+const { renderFile } = require("pug")
 require("dotenv").config()
-
 
 const server = restify.createServer()
 
@@ -28,42 +27,64 @@ server.use((req, res, next) => {
 })
 
 // Routes
-server.get({path: "/"}, (req, res, next) => {
+server.get({ path: "/" }, (req, res, next) => {
   let html = renderFile("views/index.pug")
   res.end(html)
 })
 
-server.get("/public/*", restify.plugins.serveStatic({
-  directory: __dirname,
-}))
+server.get(
+  "/public/*",
+  restify.plugins.serveStatic({
+    directory: __dirname,
+  })
+)
 
-server.get({
-  path: "/edits",
-}, require(__dirname + "/routes/v1/edits.js"))
+server.get(
+  {
+    path: "/edits",
+  },
+  require(__dirname + "/routes/v1/edits.js")
+)
 
-server.use(restify.plugins.queryParser({
-  mapParams: true
-}))
+server.use(
+  restify.plugins.queryParser({
+    mapParams: true,
+  })
+)
 
-server.get({
-  path: "/trees",
-}, require(__dirname + "/routes/v1/trees.js"))
+server.get(
+  {
+    path: "/trees",
+  },
+  require(__dirname + "/routes/v1/trees.js")
+)
 
-server.get({
-  path: "/tree/:key",
-}, require(__dirname + "/routes/v1/tree.js"))
+server.get(
+  {
+    path: "/tree/:key",
+  },
+  require(__dirname + "/routes/v1/tree.js")
+)
 
-server.use(restify.plugins.bodyParser({
-  mapParams: true
-}))
+server.use(
+  restify.plugins.bodyParser({
+    mapParams: true,
+  })
+)
 
-server.put({
-  path: "/tree",
-}, require(__dirname + "/routes/v1/put-tree.js"))
+server.put(
+  {
+    path: "/tree",
+  },
+  require(__dirname + "/routes/v1/put-tree.js")
+)
 
-server.del({
-  path: "/tree/:key",
-}, require(__dirname + "/routes/v1/delete-tree.js"))
+server.del(
+  {
+    path: "/tree/:key",
+  },
+  require(__dirname + "/routes/v1/delete-tree.js")
+)
 
 server.listen(process.env.PORT || 8080, function() {
   // eslint-disable-next-line no-console

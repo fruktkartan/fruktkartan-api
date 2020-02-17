@@ -1,3 +1,5 @@
+![Node CI](https://github.com/fruktkartan/fruktkartan-api/workflows/Node%20CI/badge.svg)
+
 New API (fall 2019) for [fruktkartan.se](http://fruktkartan.se). The API is hosted at Heroku. Data is stored in a Postgres db, that could later be extended with PostGIS, to allow for more efficient geo-querying. Files are stored at S3, where they are validated, cropped and checked by a separate AWS Lambda Python script.
 
 ## Installing

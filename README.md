@@ -81,3 +81,25 @@ files_el.addEventListener("change", () => {
 }, false);
 
 ```
+
+## Database
+The Postgres database at  `DATABASE_URL` should look like this (subject to change):
+
+```
+  Column    |            Type             | Collation | Nullable | Default 
+------------+-----------------------------+-----------+----------+---------
+ssm_key     | character(64)               |           | not null | 
+description | character varying(1024)     |           |          | 
+img         | character varying(255)      |           |          | 
+type        | character(32)               |           |          | 
+lat         | numeric                     |           | not null | 
+lon         | numeric                     |           | not null | 
+img_200     | character varying(255)      |           |          | 
+img_400     | character varying(255)      |           |          | 
+img_600     | character varying(255)      |           |          | 
+img_800     | character varying(255)      |           |          | 
+deleted_at  | timestamp without time zone |           |          | 
+deleted_by  | character varying(128)      |           |          | 
+added_by    | character varying(128)      |           |          | 
+added_at    | timestamp without time zone |           |          | now()
+```

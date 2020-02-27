@@ -11,7 +11,10 @@ let endpoint = (req, res, next) => {
 
   client.connect()
   let query =
-    "SELECT ssm_key, description, img, type, lat, lon, deleted_at, deleted_by, added_at, added_by FROM trees"
+    "SELECT ssm_key, description, img, type," +
+    "       ST_Y(point) AS lat, ST_X(point) AS lon," +
+    "       deleted_at, deleted_by, added_at, added_by" +
+    "  FROM trees"
   if (onlyDeleted) {
     query += " WHERE deleted_at IS NOT NULL"
   }

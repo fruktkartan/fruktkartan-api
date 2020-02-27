@@ -20,33 +20,33 @@ let endpoint = (req, res, next) => {
   }
 
   client.connect()
-  let query =
-    "SELECT ssm_key, description, img, type, lat, lon FROM trees WHERE deleted_at IS NULL AND type != '';"
+  const query = {
+    name: "trees",
+    text:
+      "SELECT ssm_key, description, img, type," +
+      "       ST_Y(point) AS lat, ST_X(point) AS lon" +
+      "  FROM trees" +
+      "  WHERE deleted_at IS NULL" +
+      "        AND type != ''" +
+      "        AND ST_Contains(ST_MakeEnvelope($1, $2, $3, $4), point)",
+    //       lon_min, lat_min, lon_max, lat_max
+    values: [bbox[1], bbox[0], bbox[3], bbox[2]],
+  }
   client.query(query, (err, data) => {
     if (err) {
       return next(
         new InternalServerError(`Error connecting to database: ${err}`)
       )
     }
-    let trees = data.rows
-      // We should use PostGIS to make a more efficient (and correct) query here.
-      // Waiting Heroku to release it (it's in beta now, and only available through paid plans)
-      .filter(
-        x =>
-          bbox[0] < x.lat &&
-          x.lat < bbox[2] &&
-          bbox[1] < x.lon &&
-          x.lon < bbox[3]
-      )
-      .map(x => ({
-        key: x.ssm_key.trim(),
-        lat: x.lat,
-        lng: x.lon,
-        desc: x.description !== "",
-        img: x.img !== "",
-        type: x.type.trim(),
-        group: groupMap[x.type.trim()] || "tree",
-      }))
+    let trees = data.rows.map(x => ({
+      key: x.ssm_key.trim(),
+      lat: x.lat,
+      lng: x.lon,
+      desc: x.description !== "",
+      img: x.img !== "",
+      type: x.type.trim(),
+      group: groupMap[x.type.trim()] || "tree",
+    }))
     client.end()
     res.json(trees)
     return next()

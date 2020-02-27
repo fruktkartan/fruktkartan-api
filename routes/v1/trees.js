@@ -21,7 +21,7 @@ let endpoint = (req, res, next) => {
 
   client.connect()
   let query =
-    "SELECT ssm_key, description, img, type, lat, lon FROM trees WHERE deleted_at IS NULL;"
+    "SELECT ssm_key, description, img, type, lat, lon FROM trees WHERE deleted_at IS NULL AND type != '';"
   client.query(query, (err, data) => {
     if (err) {
       return next(
@@ -38,7 +38,6 @@ let endpoint = (req, res, next) => {
           bbox[1] < x.lon &&
           x.lon < bbox[3]
       )
-      .filter(x => x.type)
       .map(x => ({
         key: x.ssm_key.trim(),
         lat: x.lat,

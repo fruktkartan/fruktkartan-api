@@ -12,6 +12,7 @@ const cors = corsMiddleware({
   preflightMaxAge: 5,
   origins: [
     "http://localhost:8080",
+    "http://localhost:8081",
     "http://fruktkartan.se",
     "https://fruktkartan.se",
     "https://fruktkartan.netlify.com",

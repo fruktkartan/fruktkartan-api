@@ -5,7 +5,9 @@ const groupMap = require("./tree-group-map.json")
 let endpoint = (req, res, next) => {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: true,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   })
 
   let bbox = [-90, -180, 90, 180]

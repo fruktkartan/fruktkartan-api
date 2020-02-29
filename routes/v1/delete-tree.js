@@ -4,7 +4,9 @@ const { InternalServerError } = require("restify-errors")
 let endpoint = (req, res, next) => {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: true,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   })
 
   client.connect()

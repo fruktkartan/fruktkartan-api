@@ -12,7 +12,9 @@ const { s3Credentials } = require("./s3.js")
 let endpoint = (req, res, next) => {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: true,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   })
 
   if (["lat", "lon", "type"].some(x => !(x in req.params))) {

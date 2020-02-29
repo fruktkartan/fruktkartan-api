@@ -86,7 +86,7 @@ server.del(
   require(__dirname + "/routes/v1/delete-tree.js")
 )
 
-server.listen(process.env.PORT || 8080, function() {
+server.listen(process.env.PORT || 8080, () => {
   // eslint-disable-next-line no-console
   console.log("%s listening at %s", server.name, server.url)
 })

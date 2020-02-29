@@ -83,23 +83,24 @@ files_el.addEventListener("change", () => {
 ```
 
 ## Database
-The Postgres database at  `DATABASE_URL` should look like this (subject to change):
+The Postgres database at `DATABASE_URL` should look like follows (subject to
+change). PostGIS 2.0+ is required, at least due to relying implicit
+(unspecified) SRID (spatial reference id).
 
 ```
-  Column    |            Type             | Collation | Nullable | Default 
-------------+-----------------------------+-----------+----------+---------
-ssm_key     | character(64)               |           | not null | 
-description | character varying(1024)     |           |          | 
-img         | character varying(255)      |           |          | 
-type        | character(32)               |           |          | 
-lat         | numeric                     |           | not null | 
-lon         | numeric                     |           | not null | 
-img_200     | character varying(255)      |           |          | 
-img_400     | character varying(255)      |           |          | 
-img_600     | character varying(255)      |           |          | 
-img_800     | character varying(255)      |           |          | 
-deleted_at  | timestamp without time zone |           |          | 
-deleted_by  | character varying(128)      |           |          | 
-added_by    | character varying(128)      |           |          | 
-added_at    | timestamp without time zone |           |          | now()
+   Column    |            Type             | Collation | Nullable | Default
+-------------+-----------------------------+-----------+----------+---------
+ ssm_key     | character(64)               |           | not null |
+ description | character varying(1024)     |           |          |
+ img         | character varying(255)      |           |          |
+ type        | character(32)               |           |          |
+ img_200     | character varying(255)      |           |          |
+ img_400     | character varying(255)      |           |          |
+ img_600     | character varying(255)      |           |          |
+ img_800     | character varying(255)      |           |          |
+ deleted_at  | timestamp without time zone |           |          |
+ deleted_by  | character varying(128)      |           |          |
+ added_by    | character varying(128)      |           |          |
+ added_at    | timestamp without time zone |           |          | now()
+ point       | geometry(Point)             |           | not null |
 ```

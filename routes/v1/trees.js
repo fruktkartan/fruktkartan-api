@@ -22,8 +22,10 @@ let endpoint = (req, res, next) => {
   }
 
   client.connect()
-  let query =
-    "SELECT ssm_key, description, img, type, lat, lon FROM trees WHERE deleted_at IS NULL;"
+  let query = `SELECT ssm_key, description, img, type,
+    ST_Y(point) AS lat, ST_X(point) AS lon FROM trees
+    WHERE ST_MakeEnvelope(${bbox[1]}, ${bbox[0]}, ${bbox[3]}, ${bbox[2]}) ~ point
+    AND deleted_at IS NULL;`
   client.query(query, (err, data) => {
     if (err) {
       return next(
@@ -31,15 +33,6 @@ let endpoint = (req, res, next) => {
       )
     }
     let trees = data.rows
-      // We should use PostGIS to make a more efficient (and correct) query here.
-      // Waiting Heroku to release it (it's in beta now, and only available through paid plans)
-      .filter(
-        x =>
-          bbox[0] < x.lat &&
-          x.lat < bbox[2] &&
-          bbox[1] < x.lon &&
-          x.lon < bbox[3]
-      )
       .filter(x => x.type)
       .map(x => ({
         key: x.ssm_key.trim(),

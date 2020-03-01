@@ -13,7 +13,7 @@ let endpoint = (req, res, next) => {
   const query = [
     "SELECT description, added_at, img, img_200, img_400, img_800, type",
     "  FROM trees",
-    "  WHERE ssm_key=$1",
+    "  WHERE ssm_key = $1",
   ].join(" ")
   client.query(query, [req.params.key], (err, data) => {
     if (err) {

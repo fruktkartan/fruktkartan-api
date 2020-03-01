@@ -1,6 +1,10 @@
 [![Node CI](https://github.com/fruktkartan/fruktkartan-api/workflows/Node%20CI/badge.svg)](https://github.com/fruktkartan/fruktkartan-api/actions)
 
-New API (fall 2019) for [fruktkartan.se](http://fruktkartan.se). The API is hosted at Heroku. Data is stored in a Postgres db, that could later be extended with PostGIS, to allow for more efficient geo-querying. Files are stored at S3, where they are validated, cropped and checked by a separate AWS Lambda Python script.
+New API (fall 2019) for [fruktkartan.se](http://fruktkartan.se). The API is
+hosted at Heroku. Data is stored in a Postgres db, that could later be extended
+with PostGIS, to allow for more efficient geo-querying. Files are stored at S3,
+where they are validated, cropped and checked by a separate AWS Lambda Python
+script.
 
 ## Installing
 
@@ -12,8 +16,8 @@ npm install
 
 ## Developing
 
-Set the environment variable DATABASE_URL to the Postgres URL before starting the service.
-
+Set the environment variable DATABASE_URL to the Postgres URL before starting
+the service.
 
 ### Testing
 
@@ -23,7 +27,12 @@ npm test
 
 ## Using the API to sign a AWS S3 upload request.
 
-Uploading a file is a two-step process: The front-end script needs to first retrieve a request token, and then use that to upload the file directly to Amazon S3. The files are checked, resized, etc once uploaded. This means that this API has no way to know if a file has been discarded (e.g. for being invalid). The client will have to call the `/tree` endpoint again, to see if a photo has been added.
+Uploading a file is a two-step process: The front-end script needs to first
+retrieve a request token, and then use that to upload the file directly to
+Amazon S3. The files are checked, resized, etc once uploaded. This means that
+this API has no way to know if a file has been discarded (e.g. for being
+invalid). The client will have to call the `/tree` endpoint again, to see if a
+photo has been added.
 
 Here is a sample implementation:
 
@@ -77,14 +86,14 @@ files_el.addEventListener("change", () => {
        console.log("Filen är uppladdad. Yay");
      }
    });
- })  
+ })
 }, false);
-
 ```
 
 ## Database
+
 The Postgres database at `DATABASE_URL` should look like follows (subject to
-change). PostGIS 2.0+ is required, at least due to relying implicit
+change). PostGIS 2.0+ is required, at least due to relying on implicit
 (unspecified) SRID (spatial reference id).
 
 ```

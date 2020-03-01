@@ -13,9 +13,9 @@ let endpoint = (req, res, next) => {
 
   client.connect()
   let query = [
-    "SELECT ssm_key, description, img, type,",
-    "       ST_Y(point) AS lat, ST_X(point) AS lon,",
-    "       deleted_at, deleted_by, added_at, added_by",
+    "SELECT ssm_key, description, img, type",
+    "       , ST_Y(point) AS lat, ST_X(point) AS lon",
+    "       , deleted_at, deleted_by, added_at, added_by",
     "  FROM trees",
   ].join(" ")
   if (onlyDeleted) {

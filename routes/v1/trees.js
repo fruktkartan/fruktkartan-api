@@ -25,8 +25,8 @@ let endpoint = (req, res, next) => {
   const query = {
     name: "trees",
     text: [
-      "SELECT ssm_key, description, img, type,",
-      "       ST_Y(point) AS lat, ST_X(point) AS lon",
+      "SELECT ssm_key, description, img, type",
+      "       , ST_Y(point) AS lat, ST_X(point) AS lon",
       "  FROM trees",
       "  WHERE deleted_at IS NULL",
       "        AND type != ''",

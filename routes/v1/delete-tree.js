@@ -15,7 +15,7 @@ let endpoint = (req, res, next) => {
   const query = [
     "UPDATE trees",
     "  SET deleted_at = $2, deleted_by = $3",
-    "  WHERE ssm_key=$1",
+    "  WHERE ssm_key = $1",
   ].join(" ")
   client.query(query, [req.params.key, time, user_ip], err => {
     if (err) {

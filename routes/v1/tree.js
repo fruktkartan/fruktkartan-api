@@ -24,7 +24,7 @@ let endpoint = (req, res, next) => {
       img: tree.img
         ? `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${tree.img}`
         : null,
-      description: tree.description,
+      desc: tree.description,
       type: tree.type.trim(),
       added: tree.added_at,
     })

@@ -18,6 +18,11 @@ let endpoint = (req, res, next) => {
         new InternalServerError(`Error connecting to database: ${err}`)
       )
     }
+    if (!data.rows.length) {
+      return next(
+        new InternalServerError(`Could not find tree with id ${req.params.key}`)
+      )      
+    }
     let tree = data.rows[0]
     client.end()
     res.json({

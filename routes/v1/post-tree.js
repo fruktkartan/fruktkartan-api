@@ -19,12 +19,12 @@ let endpoint = (req, res, next) => {
     },
   })
 
-  if ("type" in req.params) {
+  if (!("type" in req.params)) {
     return next(
       new MissingParameterError("Missing type!")
     )
   }
-  if ("key" in req.params) {
+  if (!("key" in req.params)) {
     return next(
       new MissingParameterError("Missing key!")
     )

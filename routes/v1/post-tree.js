@@ -58,11 +58,16 @@ let endpoint = (req, res, next) => {
   const query =
     "UPDATE trees" +
     "  SET type = $1, description = $2" +
-    "  WHERE ssm_key = '$3'"
-  client.query(query, [type, desc, key], err => {
+    "  WHERE ssm_key = $3"
+  client.query(query, [type, desc, key], (err, response) => {
     if (err) {
       return next(
         new InternalServerError(`Error connecting to database: ${err}`)
+      )
+    }
+    if (response.rowCount === 0) {
+      return next(
+        new InternalServerError(`No tree found to update for key ${key}`)
       )
     }
     res.json({

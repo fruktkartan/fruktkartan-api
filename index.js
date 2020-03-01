@@ -80,7 +80,7 @@ server.put(
 
 server.post(
   {
-    path: "/tree:key",
+    path: "/tree/:key",
   },
   require(__dirname + "/routes/v1/post-tree.js")
 )

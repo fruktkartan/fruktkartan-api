@@ -39,6 +39,7 @@ let endpoint = (req, res, next) => {
   */
   const type = req.params.type // TODO some validation here
   const desc = req.params.desc || ""
+  const key = req.params.key
   const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
 
   const s3Params = s3Credentials(

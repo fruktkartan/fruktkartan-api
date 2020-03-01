@@ -55,10 +55,11 @@ let endpoint = (req, res, next) => {
   )
 
   client.connect()
-  const query =
-    "UPDATE trees" +
-    "  SET type = $1, description = $2" +
-    "  WHERE ssm_key = $3"
+  const query = [
+    "UPDATE trees",
+    "  SET type = $1, description = $2",
+    "  WHERE ssm_key = $3",
+  ].join(" ")
   client.query(query, [type, desc, key], (err, response) => {
     if (err) {
       return next(

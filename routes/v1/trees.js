@@ -24,13 +24,14 @@ let endpoint = (req, res, next) => {
   client.connect()
   const query = {
     name: "trees",
-    text:
-      "SELECT ssm_key, description, img, type," +
-      "       ST_Y(point) AS lat, ST_X(point) AS lon" +
-      "  FROM trees" +
-      "  WHERE deleted_at IS NULL" +
-      "        AND type != ''" +
+    text: [
+      "SELECT ssm_key, description, img, type,",
+      "       ST_Y(point) AS lat, ST_X(point) AS lon",
+      "  FROM trees",
+      "  WHERE deleted_at IS NULL",
+      "        AND type != ''",
       "        AND ST_Contains(ST_MakeEnvelope($1, $2, $3, $4), point)",
+    ].join(" "),
     //       lon_min, lat_min, lon_max, lat_max
     values: [bbox[1], bbox[0], bbox[3], bbox[2]],
   }

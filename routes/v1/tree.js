@@ -10,8 +10,11 @@ let endpoint = (req, res, next) => {
   })
 
   client.connect()
-  let query =
-    "SELECT description, added_at, img, img_200, img_400, img_800, type FROM trees WHERE ssm_key=$1;"
+  const query = [
+    "SELECT description, added_at, img, img_200, img_400, img_800, type",
+    "  FROM trees",
+    "  WHERE ssm_key=$1",
+  ].join(" ")
   client.query(query, [req.params.key], (err, data) => {
     if (err) {
       return next(
@@ -21,7 +24,7 @@ let endpoint = (req, res, next) => {
     if (!data.rows.length) {
       return next(
         new InternalServerError(`Could not find tree with id ${req.params.key}`)
-      )      
+      )
     }
     let tree = data.rows[0]
     client.end()

@@ -3,12 +3,7 @@
  * to be moved.
  */
 const { Client } = require("pg")
-const {
-  InvalidArgumentError,
-  MissingParameterError,
-  InternalServerError,
-} = require("restify-errors")
-const validTreeTypes = require("./validTreeTypes.json")
+const { MissingParameterError, InternalServerError } = require("restify-errors")
 const { s3Credentials } = require("./s3.js")
 
 let endpoint = (req, res, next) => {
@@ -20,14 +15,10 @@ let endpoint = (req, res, next) => {
   })
 
   if (!("type" in req.params)) {
-    return next(
-      new MissingParameterError("Missing type!")
-    )
+    return next(new MissingParameterError("Missing type!"))
   }
   if (!req.params.key) {
-    return next(
-      new MissingParameterError("Missing key!")
-    )
+    return next(new MissingParameterError("Missing key!"))
   }
   /*
   Allow any tree type, for now.
@@ -40,7 +31,7 @@ let endpoint = (req, res, next) => {
   const type = req.params.type // TODO some validation here
   const desc = req.params.desc || ""
   const key = req.params.key
-  const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
+  // const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
 
   const s3Params = s3Credentials(
     {

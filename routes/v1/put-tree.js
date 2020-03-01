@@ -5,7 +5,6 @@ const {
   InternalServerError,
 } = require("restify-errors")
 const murmurhash = require("murmurhash")
-const validTreeTypes = require("./validTreeTypes.json")
 const { isValidCoords } = require("./utils.js")
 const { s3Credentials } = require("./s3.js")
 

@@ -54,10 +54,11 @@ let endpoint = (req, res, next) => {
   )
 
   client.connect()
-  const query =
-    "INSERT INTO trees" +
-    "  (ssm_key, description, type, added_by, point)" +
-    "  VALUES ($1, $2, $3, $4, ST_MakePoint($5, $6))"
+  const query = [
+    "INSERT INTO trees",
+    "  (ssm_key, description, type, added_by, point)",
+    "  VALUES ($1, $2, $3, $4, ST_MakePoint($5, $6))",
+  ].join(" ")
   client.query(query, [key, desc, type, user_ip, lon, lat], err => {
     if (err) {
       return next(

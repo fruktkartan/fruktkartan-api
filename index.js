@@ -71,18 +71,18 @@ server.use(
   })
 )
 
-server.post(
-  {
-    path: "/tree",
-  },
-  require(__dirname + "/routes/v1/post-tree.js")
-)
-
 server.put(
   {
     path: "/tree",
   },
   require(__dirname + "/routes/v1/put-tree.js")
+)
+
+server.post(
+  {
+    path: "/tree:key",
+  },
+  require(__dirname + "/routes/v1/post-tree.js")
 )
 
 server.del(

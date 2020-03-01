@@ -71,6 +71,13 @@ server.use(
   })
 )
 
+server.post(
+  {
+    path: "/tree",
+  },
+  require(__dirname + "/routes/v1/post-tree.js")
+)
+
 server.put(
   {
     path: "/tree",

@@ -34,6 +34,6 @@ module.exports = {
     semi: ["error", "never"],
     "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
     "no-console": ["error", { allow: ["warn", "error"] }],
-    "prettier/prettier": 2,
+    "prettier/prettier": "error",
   },
 }

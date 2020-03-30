@@ -10,7 +10,7 @@
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.630.0",
+    "aws-sdk": "^2.648.0",
     "dotenv": "^8.2.0",
     "murmurhash": "0.0.2",
     "pg": "^7.18.2",
@@ -24,7 +24,7 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-mocha": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "mocha": "^7.1.0",
+    "mocha": "^7.1.1",
     "prettier": "1.19.1",
     "supertest": "^4.0.2"
   }

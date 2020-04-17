@@ -1,31 +1,14 @@
 /**
  * Endpoint for retrieving temporary credentials for uploading an image to Amazon S3
  */
-const { S3 } = require("aws-sdk")
+const { getSignedRequest } = require("./s3")
+const murmurhash = require("murmurhash")
 
 module.exports = (req, res, next) => {
-  const s3 = new S3()
   const fileName = req.query["file-name"]
-  const bucket = process.env.S3_BUCKET
-  const s3Params = {
-    Bucket: bucket,
-    Key: fileName,
-    // Expires: 60,
-  }
+  const newFileName = murmurhash.v3(fileName, Date.now()) + fileName.split(".").pop()
 
-  s3.getSignedUrl("putObject", s3Params, (err, data) => {
-    if (err) {
-      res
-        .status(500)
-        .send(
-          `Något gick snett när vi försökte skaffa en tillfällig uppladdningsnyckel: ${err}`
-        )
-      return
-    }
-    const returnData = {
-      signedRequest: data,
-      url: `https://${bucket}.s3.amazonaws.com/${fileName}`,
-    }
-    res.json(returnData)
-  })
+  getSignedRequest(newFileName, process.env.S3_BUCKET, process.env.S3_REGION)
+    .then(data => res.json(data))
+    .catch(error => next(error))
 }

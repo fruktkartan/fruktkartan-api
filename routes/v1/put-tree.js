@@ -5,8 +5,7 @@ const {
   InternalServerError,
 } = require("restify-errors")
 const murmurhash = require("murmurhash")
-const { isValidCoords } = require("./utils.js")
-const { s3Credentials } = require("./s3.js")
+const { isValidCoords } = require("./utils")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -39,39 +38,22 @@ let endpoint = (req, res, next) => {
   const desc = req.params.desc || ""
   const key = murmurhash.v3("" + req.params.lat + req.params.lon, Date.now())
   const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
-
-  const s3Params = s3Credentials(
-    {
-      bucket: process.env.S3_BUCKET,
-      region: process.env.S3_REGION,
-      accessKey: process.env.S3_ACCESS_KEY,
-      secretKey: process.env.S3_SECRET_KEY,
-    },
-    {
-      filename: key + ".jpg",
-    }
-  )
+  const img = req.params.file || ""
 
   client.connect()
   const query = [
     "INSERT INTO trees",
-    "  (ssm_key, description, type, added_by, point)",
-    "  VALUES ($1, $2, $3, $4, ST_MakePoint($5, $6))",
+    "  (ssm_key, description, img, type, added_by, point)",
+    "  VALUES ($1, $2, $3, $4, $5, ST_MakePoint($6, $7))",
   ].join(" ")
-  client.query(query, [key, desc, type, user_ip, lon, lat], err => {
+  client.query(query, [key, desc, img, type, user_ip, lon, lat], err => {
     if (err) {
       return next(
         new InternalServerError(`Error connecting to database: ${err}`)
       )
     }
-    res.json({
-      key,
-      filename: key + ".jpg",
-      filetype: "image/jpeg",
-      fileEndpoint: s3Params.endpoint_url,
-      fileParams: s3Params.params,
-    })
-    return next()
+    client.end()
+    res.json({})
   })
 }
 module.exports = endpoint

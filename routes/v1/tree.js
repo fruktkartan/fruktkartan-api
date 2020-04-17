@@ -11,7 +11,7 @@ let endpoint = (req, res, next) => {
 
   client.connect()
   const query = [
-    "SELECT description, added_at, img, img_200, img_400, img_800, type",
+    "SELECT description, added_at, type",
     "  FROM trees",
     "  WHERE ssm_key = $1",
   ].join(" ")
@@ -29,11 +29,9 @@ let endpoint = (req, res, next) => {
     let tree = data.rows[0]
     client.end()
     res.json({
-      img: tree.img
-        ? `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${tree.img}`
-        : null,
-      desc: tree.description,
       type: tree.type.trim(),
+      file: tree.img,
+      desc: tree.description,
       added: tree.added_at,
     })
     return next()

@@ -4,7 +4,7 @@
  */
 const { Client } = require("pg")
 const { MissingParameterError, InternalServerError } = require("restify-errors")
-const { s3Credentials } = require("./s3.js")
+//const { getSignedRequest } = require("./s3.js")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -31,27 +31,16 @@ let endpoint = (req, res, next) => {
   const type = req.params.type // TODO some validation here
   const desc = req.params.desc || ""
   const key = req.params.key
+  const img = req.params.file || ""
   // const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
-
-  const s3Params = s3Credentials(
-    {
-      bucket: process.env.S3_BUCKET,
-      region: process.env.S3_REGION,
-      accessKey: process.env.S3_ACCESS_KEY,
-      secretKey: process.env.S3_SECRET_KEY,
-    },
-    {
-      filename: key + ".jpg",
-    }
-  )
 
   client.connect()
   const query = [
     "UPDATE trees",
-    "  SET type = $1, description = $2, added_at = now()",
-    "  WHERE ssm_key = $3",
+    "  SET type = $1, description = $2, img = $3, added_at = now()",
+    "  WHERE ssm_key = $4",
   ].join(" ")
-  client.query(query, [type, desc, key], (err, response) => {
+  client.query(query, [type, desc, img, key], (err, response) => {
     if (err) {
       return next(
         new InternalServerError(`Error connecting to database: ${err}`)
@@ -62,14 +51,8 @@ let endpoint = (req, res, next) => {
         new InternalServerError(`No tree found to update for key ${key}`)
       )
     }
-    res.json({
-      key,
-      filename: key + ".jpg",
-      filetype: "image/jpeg",
-      fileEndpoint: s3Params.endpoint_url,
-      fileParams: s3Params.params,
-    })
-    return next()
+    client.end()
+    res.json({})
   })
 }
 module.exports = endpoint

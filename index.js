@@ -14,8 +14,11 @@ const cors = corsMiddleware({
     "http://fruktkartan.se",
     "https://fruktkartan.se",
     "https://fruktkartan.netlify.com",
+    "https://fruktkartan.netlify.app",
     "https://master--fruktkartan.netlify.com",
+    "https://master--fruktkartan.netlify.app",
     "https://quite--fruktkartan.netlify.com",
+    "https://quite--fruktkartan.netlify.app",
   ],
 })
 server.pre(cors.preflight)

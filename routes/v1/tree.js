@@ -11,7 +11,7 @@ let endpoint = (req, res, next) => {
 
   client.connect()
   const query = [
-    "SELECT description, added_at, type",
+    "SELECT description, added_at, type, img",
     "  FROM trees",
     "  WHERE ssm_key = $1",
   ].join(" ")

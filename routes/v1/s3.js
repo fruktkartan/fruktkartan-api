@@ -21,12 +21,11 @@ function getSignedRequest(key, bucket, region) {
           new InternalServerError(`Error creating AWS S3 upload token: ${err}`)
         )
       }
-      const returnData = {
+      resolve({
         filename: key,
         signedRequest: data,
         url: `https://${bucket}.s3.amazonaws.com/${key}`,
-      }
-      resolve(returnData)
+      })
     })
   })
 }

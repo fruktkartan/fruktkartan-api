@@ -95,6 +95,13 @@ server.del(
   require(__dirname + "/routes/v1/delete-tree.js")
 )
 
+server.post(
+  {
+    path: "/sign",
+  },
+  require(__dirname + "/routes/v1/sign.js")
+)
+
 server.listen(process.env.PORT || 8080, () => {
   // eslint-disable-next-line no-console
   console.log("%s listening at %s", server.name, server.url)

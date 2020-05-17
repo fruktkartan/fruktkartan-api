@@ -5,7 +5,7 @@ const {
   InternalServerError,
 } = require("restify-errors")
 const murmurhash = require("murmurhash")
-const { isValidCoords } = require("./utils")
+const { isValidCoords, sanitizeText } = require("./utils")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -46,14 +46,18 @@ let endpoint = (req, res, next) => {
     "  (ssm_key, description, img, type, added_by, point)",
     "  VALUES ($1, $2, $3, $4, $5, ST_MakePoint($6, $7))",
   ].join(" ")
-  client.query(query, [key, desc, img, type, user_ip, lon, lat], err => {
-    if (err) {
-      return next(
-        new InternalServerError(`Error connecting to database: ${err}`)
-      )
+  client.query(
+    query,
+    [key, sanitizeText(desc), img, type, user_ip, lon, lat],
+    err => {
+      if (err) {
+        return next(
+          new InternalServerError(`Error connecting to database: ${err}`)
+        )
+      }
+      client.end()
+      res.json({})
     }
-    client.end()
-    res.json({})
-  })
+  )
 }
 module.exports = endpoint

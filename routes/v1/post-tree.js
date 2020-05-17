@@ -4,7 +4,7 @@
  */
 const { Client } = require("pg")
 const { MissingParameterError, InternalServerError } = require("restify-errors")
-//const { getSignedRequest } = require("./s3.js")
+const { sanitizeText } = require("./utils")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -40,7 +40,7 @@ let endpoint = (req, res, next) => {
     "  SET type = $1, description = $2, img = $3, added_at = now()",
     "  WHERE ssm_key = $4",
   ].join(" ")
-  client.query(query, [type, desc, img, key], (err, response) => {
+  client.query(query, [type, sanitizeText(desc), img, key], (err, response) => {
     if (err) {
       return next(
         new InternalServerError(`Error connecting to database: ${err}`)

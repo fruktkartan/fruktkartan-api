@@ -11,4 +11,13 @@ utils.isValidCoords = (lat, lon) => {
   )
 }
 
+/**
+ * Remove things that look like html tags from text.
+ */
+utils.sanitizeTezt = rawText => {
+  let text = rawText.replace(/<[^>]+>/g, "")
+  text = text.normalize("NFC") // Unicode NFC
+  return text
+}
+
 module.exports = utils

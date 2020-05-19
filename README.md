@@ -92,24 +92,8 @@ files_el.addEventListener("change", () => {
 
 ## Database
 
-The Postgres database at `DATABASE_URL` should look like follows (subject to
-change). PostGIS 2.0+ is required, at least due to relying on implicit
-(unspecified) SRID (spatial reference id).
+A Postgres database with PostGIS 2.0+ is required, (at least) due to relying on
+implicit (unspecified) SRID (spatial reference id).
 
-```
-   Column    |            Type             | Collation | Nullable | Default
--------------+-----------------------------+-----------+----------+---------
- ssm_key     | character(64)               |           | not null |
- description | character varying(1024)     |           |          |
- img         | character varying(255)      |           |          |
- type        | character(32)               |           |          |
- img_200     | character varying(255)      |           |          |
- img_400     | character varying(255)      |           |          |
- img_600     | character varying(255)      |           |          |
- img_800     | character varying(255)      |           |          |
- deleted_at  | timestamp without time zone |           |          |
- deleted_by  | character varying(128)      |           |          |
- added_by    | character varying(128)      |           |          |
- added_at    | timestamp without time zone |           |          | now()
- point       | geometry(Point)             |           | not null |
-```
+For database definition, including the history table, trigger & function, see
+`schema.sql`.

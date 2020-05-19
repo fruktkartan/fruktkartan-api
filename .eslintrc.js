@@ -29,11 +29,13 @@ module.exports = {
         SwitchCase: 1,
       },
     ],
+    "func-call-spacing": ["error", "never"],
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "never"],
     "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
     "no-console": ["error", { allow: ["warn", "error"] }],
     "prettier/prettier": "error",
+    "max-len": [2, { code: 90, tabWidth: 2, ignoreUrls: true }],
   },
 }

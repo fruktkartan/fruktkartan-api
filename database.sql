@@ -5,8 +5,6 @@ CREATE TABLE trees (
     description character varying(1024),
     img character varying(255),
     type character(32),
-    deleted_at timestamp without time zone,
-    deleted_by character varying(128),
     added_by character varying(128),
     added_at timestamp without time zone DEFAULT now(),
     point geometry(Point) NOT NULL

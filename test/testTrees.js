@@ -1,4 +1,6 @@
-/* Tests the /lead/html endponit*/
+/**
+ * Tests the /trees endpoint
+ */
 const app = require("../index")
 const assert = require("assert")
 const request = require("supertest")

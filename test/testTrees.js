@@ -1,5 +1,5 @@
 /**
- * Tests the /trees endpoint
+ * Tests for the `/trees` endpoint
  */
 const app = require("../index")
 const assert = require("assert")

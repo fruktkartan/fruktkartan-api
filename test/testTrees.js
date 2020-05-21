@@ -10,13 +10,9 @@ describe("Calling trees", function () {
       .expect(200)
       .expect("Content-Type", "application/json; charset=utf-8")
       .then(r => {
-        console.log("HEJ")
         assert(r.body.length > 1000)
         assert(r.body.every(x => x.key))
         done()
-      })
-      .catch(e => {
-        console.log("OPDS", e)
       })
   })
 })

@@ -29,8 +29,14 @@ describe("Using a bbox", function () {
         done()
       })
   })
-  it("should return an error on invalid coordinates", function (done) {
+  it("should return an error on too few coordinates", function (done) {
     request(app).get("/trees?bbox=59.1,10,59.2").expect(409, done)
+  })
+  it("should return an error on invalid coordinates", function (done) {
+    request(app).get("/trees?bbox=59.1,10,59.2,320").expect(409, done)
+  })
+  it("should return an error on non-parsable coordinates", function (done) {
+    request(app).get("/trees?bbox=59.1,10,59.2,X").expect(409, done)
   })
 })
 

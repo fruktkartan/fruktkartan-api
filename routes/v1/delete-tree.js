@@ -1,5 +1,5 @@
 const { Client } = require("pg")
-const { InternalServerError } = require("restify-errors")
+const { InternalServerError, NotFoundError } = require("restify-errors")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -8,20 +8,18 @@ let endpoint = (req, res, next) => {
       rejectUnauthorized: false,
     },
   })
-
+  const key = req.params.key
   client.connect()
-  const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
-  const time = new Date()
-  const query = [
-    "UPDATE trees",
-    "  SET deleted_at = $2, deleted_by = $3",
-    "  WHERE ssm_key = $1",
-  ].join(" ")
-  client.query(query, [req.params.key, time, user_ip], err => {
+  const query = "DELETE FROM trees WHERE ssm_key = $1"
+  client.query(query, [key], (err, response) => {
+    client.end()
     if (err) {
       return next(
         new InternalServerError(`Error connecting to database: ${err}`)
       )
+    }
+    if (response.rowCount === 0) {
+      return next(new NotFoundError(`No such tree to delete: ${key}`))
     }
     res.json({})
     return next()

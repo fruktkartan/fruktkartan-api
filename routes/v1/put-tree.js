@@ -50,12 +50,12 @@ let endpoint = (req, res, next) => {
     query,
     [key, sanitizeText(desc), img, type, user_ip, lon, lat],
     err => {
+      client.end()
       if (err) {
         return next(
           new InternalServerError(`Error connecting to database: ${err}`)
         )
       }
-      client.end()
       res.json({})
     }
   )

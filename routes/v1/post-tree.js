@@ -41,6 +41,7 @@ let endpoint = (req, res, next) => {
     "  WHERE ssm_key = $4",
   ].join(" ")
   client.query(query, [type, sanitizeText(desc), img, key], (err, response) => {
+    client.end()
     if (err) {
       return next(
         new InternalServerError(`Error connecting to database: ${err}`)
@@ -51,7 +52,6 @@ let endpoint = (req, res, next) => {
         new InternalServerError(`No tree found to update for key ${key}`)
       )
     }
-    client.end()
     res.json({})
   })
 }

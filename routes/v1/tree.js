@@ -16,6 +16,7 @@ let endpoint = (req, res, next) => {
     "  WHERE ssm_key = $1",
   ].join(" ")
   client.query(query, [req.params.key], (err, data) => {
+    client.end()
     if (err) {
       return next(
         new InternalServerError(`Error connecting to database: ${err}`)
@@ -27,7 +28,6 @@ let endpoint = (req, res, next) => {
       )
     }
     let tree = data.rows[0]
-    client.end()
     res.json({
       type: tree.type.trim(),
       file: tree.img,

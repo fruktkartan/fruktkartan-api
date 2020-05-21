@@ -33,8 +33,7 @@ let endpoint = (req, res, next) => {
       "SELECT ssm_key, description, img, type",
       "       , ST_Y(point) AS lat, ST_X(point) AS lon",
       "  FROM trees",
-      "  WHERE deleted_at IS NULL",
-      "        AND type != ''",
+      "  WHERE type != ''",
       "        AND ST_Contains(ST_MakeEnvelope($1, $2, $3, $4), point)",
     ].join(" "),
     //       lon_min, lat_min, lon_max, lat_max

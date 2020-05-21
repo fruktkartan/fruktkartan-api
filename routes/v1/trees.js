@@ -1,5 +1,6 @@
 const { Client } = require("pg")
 const { InvalidArgumentError, InternalServerError } = require("restify-errors")
+const { isValidCoords } = require("./utils")
 const groupMap = require("./tree-group-map.json")
 
 let endpoint = (req, res, next) => {
@@ -14,7 +15,11 @@ let endpoint = (req, res, next) => {
   if ("bbox" in req.params) {
     bbox = req.params.bbox.split(",").map(x => parseFloat(x.trim()))
 
-    if (bbox.length < 4 || bbox.some(x => Number.isNaN(x))) {
+    if (
+      bbox.length < 4 ||
+      !isValidCoords(bbox[1], bbox[0]) ||
+      !isValidCoords(bbox[3], bbox[2])
+    ) {
       return next(
         new InvalidArgumentError(`Invalid bbox argument: ${req.params.bbox}`)
       )

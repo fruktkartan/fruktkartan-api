@@ -37,7 +37,9 @@ let endpoint = (req, res, next) => {
   const type = req.params.type // TODO some validation here
   const desc = req.params.desc || ""
   const key = murmurhash.v3("" + req.params.lat + req.params.lon, Date.now())
-  const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
+  const user_ip = murmurhash.v3(
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress
+  )
   const img = req.params.file || ""
 
   client.connect()

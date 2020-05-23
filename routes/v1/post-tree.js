@@ -5,6 +5,7 @@
 const { Client } = require("pg")
 const { MissingParameterError, InternalServerError } = require("restify-errors")
 const { sanitizeText } = require("./utils")
+const murmurhash = require("murmurhash")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -32,27 +33,33 @@ let endpoint = (req, res, next) => {
   const desc = req.params.desc || ""
   const key = req.params.key
   const img = req.params.file || ""
-  // const user_ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress
+  const user_ip = murmurhash.v3(
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress
+  )
 
   client.connect()
   const query = [
     "UPDATE trees",
-    "  SET type = $1, description = $2, img = $3, added_at = now()",
+    "  SET type = $1, description = $2, img = $3, added_by = $4, added_at = now()",
     "  WHERE ssm_key = $4",
   ].join(" ")
-  client.query(query, [type, sanitizeText(desc), img, key], (err, response) => {
-    client.end()
-    if (err) {
-      return next(
-        new InternalServerError(`Error connecting to database: ${err}`)
-      )
+  client.query(
+    query,
+    [type, sanitizeText(desc), img, key, user_ip],
+    (err, response) => {
+      client.end()
+      if (err) {
+        return next(
+          new InternalServerError(`Error connecting to database: ${err}`)
+        )
+      }
+      if (response.rowCount === 0) {
+        return next(
+          new InternalServerError(`No tree found to update for key ${key}`)
+        )
+      }
+      res.json({})
     }
-    if (response.rowCount === 0) {
-      return next(
-        new InternalServerError(`No tree found to update for key ${key}`)
-      )
-    }
-    res.json({})
-  })
+  )
 }
 module.exports = endpoint

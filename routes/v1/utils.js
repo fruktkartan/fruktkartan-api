@@ -5,9 +5,7 @@ utils.isValidCoords = (lat, lon) => {
     parseFloat(lat) &&
     parseFloat(lon) &&
     parseFloat(lat) >= -90 &&
-    parseFloat(lat) <= 90 &&
-    parseFloat(lon) >= -180 &&
-    parseFloat(lon) <= 180
+    parseFloat(lat) <= 90
   )
 }
 

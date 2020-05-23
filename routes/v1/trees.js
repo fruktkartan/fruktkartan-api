@@ -17,8 +17,8 @@ let endpoint = (req, res, next) => {
 
     if (
       bbox.length < 4 ||
-      !isValidCoords(bbox[1], bbox[0]) ||
-      !isValidCoords(bbox[3], bbox[2])
+      !isValidCoords(bbox[0], bbox[1]) ||
+      !isValidCoords(bbox[2], bbox[3])
     ) {
       return next(
         new InvalidArgumentError(`Invalid bbox argument: ${req.params.bbox}`)

@@ -13,6 +13,7 @@ const cors = corsMiddleware({
     "http://localhost:8081",
     "http://fruktkartan.se",
     "https://fruktkartan.se",
+    "https://fruktkartan.github.io",
     "https://fruktkartan.netlify.com",
     "https://fruktkartan.netlify.app",
     "https://master--fruktkartan.netlify.com",

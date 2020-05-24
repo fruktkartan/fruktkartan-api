@@ -38,7 +38,7 @@ let endpoint = (req, res, next) => {
   const query = [
     "UPDATE trees",
     "  SET type = $1, description = $2, img = $3, added_by = $4, added_at = now()",
-    "  WHERE ssm_key = $4",
+    "  WHERE ssm_key = $5",
   ].join(" ")
   client.query(
     query,

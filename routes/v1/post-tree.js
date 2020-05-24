@@ -4,8 +4,7 @@
  */
 const { Client } = require("pg")
 const { MissingParameterError, InternalServerError } = require("restify-errors")
-const { sanitizeText } = require("./utils")
-const murmurhash = require("murmurhash")
+const { sanitizeText, userHash } = require("./utils")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -33,9 +32,7 @@ let endpoint = (req, res, next) => {
   const desc = req.params.desc || ""
   const key = req.params.key
   const img = req.params.file || ""
-  const user_ip = murmurhash.v3(
-    req.headers["x-forwarded-for"] || req.connection.remoteAddress
-  )
+  const user_ip = userHash(req)
 
   client.connect()
   const query = [

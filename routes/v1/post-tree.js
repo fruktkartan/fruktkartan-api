@@ -42,7 +42,7 @@ let endpoint = (req, res, next) => {
   ].join(" ")
   client.query(
     query,
-    [type, sanitizeText(desc), img, key, user_ip],
+    [type, sanitizeText(desc), img, user_ip, key],
     (err, response) => {
       client.end()
       if (err) {

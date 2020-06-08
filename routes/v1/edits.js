@@ -15,6 +15,7 @@ let endpoint = (req, res, next) => {
     "       , ST_Y(point) AS lat, ST_X(point) AS lon",
     "       , added_at, added_by",
     "  FROM trees",
+    "  ORDER BY added_at",
   ].join(" ")
   client.query(query, (err, data) => {
     client.end()

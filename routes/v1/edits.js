@@ -15,7 +15,7 @@ let endpoint = (req, res, next) => {
     "       , ST_Y(point) AS lat, ST_X(point) AS lon",
     "       , added_at, added_by",
     "  FROM trees",
-    "  ORDER BY added_at",
+    "  ORDER BY added_at DESC",
   ].join(" ")
   client.query(query, (err, data) => {
     client.end()
@@ -29,7 +29,6 @@ let endpoint = (req, res, next) => {
         x.ssm_key = x.ssm_key.trim()
         return x
       })
-      .sort((a, b) => (a.added_at < b.added_at ? 1 : -1))
     res.json(edits)
     return next()
   })

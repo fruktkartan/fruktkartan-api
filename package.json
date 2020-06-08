@@ -12,6 +12,7 @@
   "dependencies": {
     "aws-sdk": "^2.681.0",
     "dotenv": "^8.2.0",
+    "git-describe": "^4.0.4",
     "murmurhash": "^1.0.0",
     "pg": "^8.2.1",
     "pug": "^3.0.0",

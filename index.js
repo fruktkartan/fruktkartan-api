@@ -1,7 +1,6 @@
 const restify = require("restify")
 const corsMiddleware = require("restify-cors-middleware")
 const { renderFile } = require("pug")
-const { gitDescribeSync } = require("git-describe")
 require("dotenv").config()
 
 const server = restify.createServer()
@@ -30,13 +29,9 @@ server.use((req, res, next) => {
   return next()
 })
 
-const gitInfo = gitDescribeSync(__dirname)
-
 // Routes
 server.get({ path: "/" }, (req, res, next) => {
-  let html = renderFile("views/index.pug", {
-    gitHash: gitInfo.hash,
-  })
+  let html = renderFile("views/index.pug")
   res.end(html)
 })
 

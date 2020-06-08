@@ -7,29 +7,27 @@ mixin example(url)
 block content
 
   h2 Fruktkartan API
-
+  
   p This is the REST API for #[a(href="https://fruktkartan.se") fruktkartan.se]. You are free to use data from this API, but please #[a(href="mailto:mejl@leowallentin.se", title="mejl@leowallentin.se") let us know] if you are building a public service or plan on doing a lot of requests, to make sure we can handle the load.
-
-  p Currently running API from git revision  #[a(href="https://github.com/fruktkartan/fruktkartan-api/commit/" + gitHash) #{gitHash}].
-
+  
   h3 Endpoints
-
+  
   dl
-
+    
     dt: code /trees?bbox=lat_1,lon_1,lat_2,lon2
     dd
-      | Display a list of trees. Use the #[code bbox] parameter to target a specific bounding box (highly recommended):
-      + example("/trees?bbox=59,18,59.2,18.2")
+      | Display a list of trees. Use the #[code bbox] parameter to target a specific bounding box (highly recommended): 
+      +example("/trees?bbox=59,18,59.2,18.2")
 
     dt: code /tree/{id}
     dd
-      | Display a specific tree:
+      | Display a specific tree: 
       + example("/tree/3446190092")
 
   h3 Bugs
 
   p Please report any bugs in the Github issue tracker: #[a(href="https://github.com/fruktkartan/fruktkartan-api/issues") https://github.com/fruktkartan/fruktkartan-api/issues]
-
-  h3 Licensing
-
+  
+  h3 Lincensing
+  
   p The Fruktkartan data is made available here under the Open Database License: #[a(href="http://opendatacommons.org/licenses/odbl/1.0/") http://opendatacommons.org/licenses/odbl/1.0/]. Any rights in individual contents of the database are licensed under the Database Contents License: #[a(href="http://opendatacommons.org/licenses/dbcl/1.0/") http://opendatacommons.org/licenses/dbcl/1.0/].

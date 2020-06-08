@@ -24,11 +24,10 @@ let endpoint = (req, res, next) => {
         new InternalServerError(`Error connecting to database: ${err}`)
       )
     }
-    let edits = data.rows
-      .map(x => {
-        x.ssm_key = x.ssm_key.trim()
-        return x
-      })
+    let edits = data.rows.map(x => {
+      x.ssm_key = x.ssm_key.trim()
+      return x
+    })
     res.json(edits)
     return next()
   })

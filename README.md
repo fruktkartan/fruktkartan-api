@@ -6,6 +6,8 @@ with PostGIS, to allow for more efficient geo-querying. Files are stored at S3,
 where they are validated, cropped and checked by a separate AWS Lambda Python
 script.
 
+The API is hosted at https://fruktkartan-api.herokuapp.com/, and a development version at https://fruktkartan-api-dev.herokuapp.com/
+
 ## Installing
 
 ```sh

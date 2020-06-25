@@ -12,6 +12,7 @@ let endpoint = (req, res, next) => {
   client.connect()
   const query = [
     "SELECT description, added_at, type, img",
+    "       , ST_Y(point) AS lat, ST_X(point) AS lon",
     "  FROM trees",
     "  WHERE ssm_key = $1",
   ].join(" ")
@@ -33,6 +34,8 @@ let endpoint = (req, res, next) => {
       file: tree.img,
       desc: tree.description,
       added: tree.added_at,
+      lat: tree.lat,
+      lon: tree.lon,
     })
     return next()
   })

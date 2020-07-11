@@ -1,7 +1,16 @@
 const { Client } = require("pg")
-const { InternalServerError, NotFoundError } = require("restify-errors")
+const {
+  InternalServerError,
+  NotFoundError,
+  InvalidArgumentError,
+} = require("restify-errors")
 
 let endpoint = (req, res, next) => {
+  const key = req.params.key
+  if (!key) {
+    return next(new InvalidArgumentError("Key missing"))
+  }
+
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -16,7 +25,7 @@ let endpoint = (req, res, next) => {
     "  FROM trees",
     "  WHERE ssm_key = $1",
   ].join(" ")
-  client.query(query, [req.params.key], (err, data) => {
+  client.query(query, [key], (err, data) => {
     client.end()
     if (err) {
       return next(
@@ -24,9 +33,7 @@ let endpoint = (req, res, next) => {
       )
     }
     if (!data.rows.length) {
-      return next(
-        new NotFoundError(`Could not find tree with id ${req.params.key}`)
-      )
+      return next(new NotFoundError(`Could not find tree with id ${key}`))
     }
     let tree = data.rows[0]
     res.json({

@@ -1,5 +1,5 @@
 const { Client } = require("pg")
-const { InternalServerError } = require("restify-errors")
+const { InternalServerError, NotFoundError } = require("restify-errors")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -25,7 +25,7 @@ let endpoint = (req, res, next) => {
     }
     if (!data.rows.length) {
       return next(
-        new InternalServerError(`Could not find tree with id ${req.params.key}`)
+        new NotFoundError(`Could not find tree with id ${req.params.key}`)
       )
     }
     let tree = data.rows[0]

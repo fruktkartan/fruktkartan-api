@@ -20,14 +20,12 @@ let endpoint = (req, res, next) => {
   if (!req.params.key) {
     return next(new MissingParameterError("Missing key!"))
   }
-  /*
-  Allow any tree type, for now.
-  if (!validTreeTypes.includes(req.params.type)) {
-    return next(
-      new InvalidArgumentError(`${req.params.type} is not a valid tree type.`)
-    )
-  }
-  */
+  // Allow any tree type, for now.
+  // if (!validTreeTypes.includes(req.params.type)) {
+  //   return next(
+  //     new InvalidArgumentError(`${req.params.type} is not a valid tree type.`)
+  //   )
+  // }
   const type = req.params.type // TODO some validation here
   const desc = req.params.desc || ""
   const key = req.params.key

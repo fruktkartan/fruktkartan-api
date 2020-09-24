@@ -22,13 +22,12 @@ let endpoint = (req, res, next) => {
       )
     )
   }
-  /*
-  Allow any tree type, for now.
-  if (!validTreeTypes.includes(req.params.type)) {
-    return next(
-      new InvalidArgumentError(`${req.params.type} is not a valid tree type.`)
-    )
-  }*/
+  // Allow any tree type, for now.
+  // if (!validTreeTypes.includes(req.params.type)) {
+  //   return next(
+  //     new InvalidArgumentError(`${req.params.type} is not a valid tree type.`)
+  //   )
+  // }
   if (!isValidCoords(req.params.lat, req.params.lon)) {
     return next(new InvalidArgumentError("Invalid coordinates"))
   }

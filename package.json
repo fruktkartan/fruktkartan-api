@@ -4,8 +4,8 @@
   "description": "Fruktkartan API",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/eslint/bin/eslint.js . && PORT=8082 node_modules/mocha/bin/mocha test",
-    "lint": "node_modules/eslint/bin/eslint.js --fix ."
+    "test": "eslint . && PORT=8082 mocha test",
+    "lint": "eslint --fix ."
   },
   "author": "Leo Wallentin",
   "license": "MIT",

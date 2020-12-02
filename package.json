@@ -10,10 +10,10 @@
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.744.0",
+    "aws-sdk": "^2.802.0",
     "dotenv": "^8.2.0",
     "murmurhash": "^1.0.0",
-    "pg": "^8.3.3",
+    "pg": "^8.5.1",
     "pug": "^3.0.0",
     "restify": "^8.5.1",
     "restify-cors-middleware": "^1.1.1",

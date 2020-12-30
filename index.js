@@ -12,6 +12,7 @@ const cors = corsMiddleware({
     "http://0.0.0.0:8000",
     "http://localhost:8080",
     "http://localhost:8081",
+    "http://127.0.0.1:8887",
     "http://fruktkartan.se",
     "https://fruktkartan.se",
     "https://fruktkartan.github.io",

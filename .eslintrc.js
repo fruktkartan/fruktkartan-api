@@ -8,7 +8,6 @@ module.exports = {
   extends: [
     "eslint:recommended",
     "plugin:prettier/recommended",
-    "prettier/babel",
     "plugin:mocha/recommended",
   ],
   parserOptions: {

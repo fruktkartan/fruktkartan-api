@@ -10,22 +10,22 @@
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.819.0",
+    "aws-sdk": "^2.855.0",
     "dotenv": "^8.2.0",
     "murmurhash": "^1.0.0",
     "pg": "^8.5.1",
-    "pug": "^3.0.0",
+    "pug": "^3.0.2",
     "restify": "^8.5.1",
     "restify-cors-middleware": "^1.1.1",
     "restify-errors": "^8.0.2"
   },
   "devDependencies": {
-    "eslint": "^7.16.0",
-    "eslint-config-prettier": "^7.1.0",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-mocha": "^8.0.0",
-    "eslint-plugin-prettier": "^3.3.0",
-    "mocha": "^8.2.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "mocha": "^8.3.0",
     "prettier": "^2.2.1",
-    "supertest": "^6.0.1"
+    "supertest": "^6.1.3"
   }
 }

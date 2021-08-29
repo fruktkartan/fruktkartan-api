@@ -1,14 +1,14 @@
 /**
- * Endpoint for updating an existing tree. Does not currently allow the tree
- * to be moved.
+ * Endpoint for updating an existing tree.
  */
 const { Client } = require("pg")
 const {
+  InvalidArgumentError,
   MissingParameterError,
   InternalServerError,
   NotFoundError,
 } = require("restify-errors")
-const { sanitizeText, userHash } = require("./utils")
+const { isValidCoords, sanitizeText, userHash } = require("./utils")
 
 let endpoint = (req, res, next) => {
   const client = new Client({
@@ -18,31 +18,69 @@ let endpoint = (req, res, next) => {
     },
   })
 
-  if (!("type" in req.params)) {
-    return next(new MissingParameterError("Missing type!"))
-  }
   if (!req.params.key) {
     return next(new MissingParameterError("Missing key!"))
   }
-  // Allow any tree type, for now.
-  // if (!validTreeTypes.includes(req.params.type)) {
-  //   return next(
-  //     new InvalidArgumentError(`${req.params.type} is not a valid tree type.`)
-  //   )
-  // }
-  const type = req.params.type // TODO some validation here
-  const desc = req.params.desc || ""
-  const key = req.params.key
-  const img = req.params.file || ""
-  const user_ip = userHash(req)
 
   client.connect()
-  const query = ["UPDATE trees SET added_by = $2, added_at = now()"]
-  query.push(" , type = $3")
-  query.push(" , description = $4")
-  query.push(" , img = $5")
-  query.push(" WHERE ssm_key = $1")
-  var values = [key, user_ip, type, sanitizeText(desc), img]
+
+  let idx = 1
+  let query = ["UPDATE trees SET added_at = now()"]
+  let values = []
+
+  query.push(`, added_by = $${idx}`)
+  values.push(userHash(req))
+  idx++
+
+  const idx_noparams = idx
+
+  if ("type" in req.params) {
+    // TODO should do some validation here? Allowing any tree type, for now.
+    // Idea:
+    // if (!validTreeTypes.includes(req.params.type)) {
+    //   return next(
+    //     new InvalidArgumentError(`${req.params.type} is not a valid tree type.`)
+    //   )
+    // }
+    query.push(`, type = $${idx}`)
+    values.push(req.params.type)
+    idx++
+  }
+
+  if ("desc" in req.params) {
+    query.push(`, description = $${idx}`)
+    values.push(sanitizeText(req.params.desc || ""))
+    idx++
+  }
+
+  // Expects req.params.file to be passed also when the image is deleted (which
+  // the frontend does).
+  if ("file" in req.params) {
+    query.push(`, img = $${idx}`)
+    values.push(req.params.file || "")
+    idx++
+  }
+
+  const lat = req.params.lat || ""
+  const lon = req.params.lon || ""
+  if (lat || lon) {
+    if (!lat || !lon || !isValidCoords(lat, lon)) {
+      return next(new InvalidArgumentError("Invalid coordinates"))
+    }
+    query.push(`, point = ST_MakePoint($${idx}, $${idx + 1})`)
+    values.push(lon, lat)
+    idx += 2
+  }
+
+  if (idx == idx_noparams) {
+    return next(new MissingParameterError("Nothing to update"))
+  }
+
+  const key = req.params.key
+  query.push(` WHERE ssm_key = $${idx}`)
+  values.push(key)
+  idx++
+
   client.query(query.join(" "), values, (err, response) => {
     client.end()
     if (err) {

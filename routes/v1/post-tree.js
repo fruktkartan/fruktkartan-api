@@ -3,7 +3,11 @@
  * to be moved.
  */
 const { Client } = require("pg")
-const { MissingParameterError, InternalServerError } = require("restify-errors")
+const {
+  MissingParameterError,
+  InternalServerError,
+  NotFoundError,
+} = require("restify-errors")
 const { sanitizeText, userHash } = require("./utils")
 
 let endpoint = (req, res, next) => {
@@ -33,28 +37,23 @@ let endpoint = (req, res, next) => {
   const user_ip = userHash(req)
 
   client.connect()
-  const query = [
-    "UPDATE trees",
-    "  SET type = $1, description = $2, img = $3, added_by = $4, added_at = now()",
-    "  WHERE ssm_key = $5",
-  ].join(" ")
-  client.query(
-    query,
-    [type, sanitizeText(desc), img, user_ip, key],
-    (err, response) => {
-      client.end()
-      if (err) {
-        return next(
-          new InternalServerError(`Error connecting to database: ${err}`)
-        )
-      }
-      if (response.rowCount === 0) {
-        return next(
-          new InternalServerError(`No tree found to update for key ${key}`)
-        )
-      }
-      res.json({})
+  const query = ["UPDATE trees SET added_by = $2, added_at = now()"]
+  query.push(" , type = $3")
+  query.push(" , description = $4")
+  query.push(" , img = $5")
+  query.push(" WHERE ssm_key = $1")
+  var values = [key, user_ip, type, sanitizeText(desc), img]
+  client.query(query.join(" "), values, (err, response) => {
+    client.end()
+    if (err) {
+      return next(
+        new InternalServerError(`Error connecting to database: ${err}`)
+      )
     }
-  )
+    if (response.rowCount === 0) {
+      return next(new NotFoundError(`No tree found to update for key ${key}`))
+    }
+    res.json({})
+  })
 }
 module.exports = endpoint

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang=sv>
+  <head>
+    <meta charset="utf-8">
+    <title>Fruktkartan API</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cutestrap/1.3.1/css/cutestrap.min.css">
+  </head>
+  <body>
+    <div class="wrapper">
+
+      <h1>Fruktkartan API</h1>
+      
+      <p>This is the REST API for <a href="https://fruktkartan.se">fruktkartan.se</a>. You are free to use data from this API, but please <a href="mailto:mejl@leowallentin.se" title="mejl@leowallentin.se">let us know</a> if you are building a public service or plan on doing a lot of requests, to make sure we can handle the load.</p>
+      
+      <h2>Endpoints</h2>
+      <dl>
+        
+        <dt><code>/trees?bbox=lat_1,lon_1,lat_2,lon2</code></dt>
+        <dd>
+          Display a list of trees. Use the #[code bbox] parameter to target a specific bounding box (highly recommended): 
+          <code>
+            <a href="/trees?bbox=59,18,59.2,18.2">/trees?bbox=59,18,59.2,18.2</a>
+          </code>
+        </dd>
+        <dt><code>/tree/{id}</code></dt>
+        <dd>
+          Display a specific tree: 
+          <code>
+            <a href="/tree/3446190092">/tree/3446190092</a>
+          </code>
+        </dd>
+      </dl>
+      <h3>Bugs</h3>
+    
+      <p>Please report any bugs in the Github issue tracker: <a href="https://github.com/fruktkartan/fruktkartan-api/issues">https://github.com/fruktkartan/fruktkartan-api/issues</a></p>
+      
+      <h3>Lincensing</h3>
+      
+      <p>The Fruktkartan data is made available here under the Open Database License: <a href="http://opendatacommons.org/licenses/odbl/1.0/">http://opendatacommons.org/licenses/odbl/1.0/</a>. Any rights in individual contents of the database are licensed under the Database Contents License: <a href="http://opendatacommons.org/licenses/dbcl/1.0/">http://opendatacommons.org/licenses/dbcl/1.0/</a>.</p>
+    </div>
+  </body>
+</html>

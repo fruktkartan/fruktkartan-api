@@ -14,7 +14,6 @@
     "dotenv": "^16.3.1",
     "murmurhash": "^1.0.0",
     "pg": "^8.11.2",
-    "pug": "^3.0.2",
     "restify": "^11.1.0",
     "restify-cors-middleware": "^1.1.1",
     "restify-errors": "^8.0.2"

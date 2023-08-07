@@ -1,6 +1,7 @@
 const restify = require("restify")
 const corsMiddleware = require("restify-cors-middleware")
-const { renderFile } = require("pug")
+const fs = require("fs")
+
 require("dotenv").config()
 
 const server = restify.createServer()
@@ -33,7 +34,11 @@ server.use((req, res, next) => {
 
 // Routes
 server.get({ path: "/" }, (req, res, next) => {
-  let html = renderFile("views/index.pug")
+  const html = fs.readFileSync("views/index.html")
+  res.writeHead(200, {
+    "Content-Length": Buffer.byteLength(html),
+    "Content-Type": "text/html",
+  })
   res.end(html)
 })
 

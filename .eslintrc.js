@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   env: {
     node: true,
-    es6: true,
+    es2024: true,
     mocha: true,
   },
   extends: [
@@ -13,7 +13,7 @@ module.exports = {
   parserOptions: {
     sourceType: "module",
     parser: "babel-eslint",
-    ecmaVersion: 2018,
+    ecmaVersion: 2024,
   },
   plugins: ["prettier", "mocha"],
   rules: {

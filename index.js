@@ -96,13 +96,6 @@ server.post(
   require(__dirname + "/routes/v1/post-tree.js")
 )
 
-server.del(
-  {
-    path: "/tree/:key",
-  },
-  require(__dirname + "/routes/v1/delete-tree.js")
-)
-
 server.post(
   {
     path: "/sign",

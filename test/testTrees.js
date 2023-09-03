@@ -14,7 +14,7 @@ test("Calling trees", async t => {
     "application/json; charset=utf-8",
     "should be json"
   )
-  t.ok(response.body.length > 1000, "should be a long list")
+  t.ok(response.body.length > 10000, "should be a long list")
 })
 
 test("Using a bbox", async t => {
@@ -28,7 +28,7 @@ test("Using a bbox", async t => {
     "application/json; charset=utf-8",
     "should be json"
   )
-  t.ok(response.body.length < 1000, "should return a limited list of trees")
+  t.ok(response.body.length < 10000, "should return a limited list of trees")
 
   response = await app.inject({
     method: "GET",

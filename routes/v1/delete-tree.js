@@ -1,8 +1,7 @@
-const { Client } = require("pg")
-const { InternalServerError, NotFoundError } = require("restify-errors")
+import pg from "pg"
 
-let endpoint = (req, res, next) => {
-  const client = new Client({
+export default (req, reply) => {
+  const client = new pg.Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
@@ -14,15 +13,11 @@ let endpoint = (req, res, next) => {
   client.query(query, [key], (err, response) => {
     client.end()
     if (err) {
-      return next(
-        new InternalServerError(`Error connecting to database: ${err}`)
-      )
+      reply.internalServerError(`Error connecting to database: ${err}`)
     }
     if (response.rowCount === 0) {
-      return next(new NotFoundError(`No such tree to delete: ${key}`))
+      reply.notFound(`No such tree to delete: ${key}`)
     }
-    res.json({})
-    return next()
+    reply.code(204).send()
   })
 }
-module.exports = endpoint

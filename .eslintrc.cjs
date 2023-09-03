@@ -3,21 +3,15 @@ module.exports = {
   env: {
     node: true,
     es2024: true,
-    mocha: true,
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:mocha/recommended",
-  ],
+  extends: ["eslint:recommended", "plugin:prettier/recommended"],
   parserOptions: {
     sourceType: "module",
     parser: "babel-eslint",
     ecmaVersion: 2024,
   },
-  plugins: ["prettier", "mocha"],
+  plugins: ["prettier"],
   rules: {
-    "mocha/max-top-level-suites": ["warn", { limit: 5 }],
     indent: [
       "error",
       2,

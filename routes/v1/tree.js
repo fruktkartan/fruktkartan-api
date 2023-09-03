@@ -1,23 +1,18 @@
-const { Client } = require("pg")
-const {
-  InternalServerError,
-  NotFoundError,
-  InvalidArgumentError,
-} = require("restify-errors")
+import pg from "pg"
 
-let endpoint = (req, res, next) => {
+export default (req, reply) => {
   const key = req.params.key
   if (!key) {
-    return next(new InvalidArgumentError("Key missing"))
+    reply.badRequest("Key missing")
   }
 
-  const client = new Client({
+  const client = new pg.Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
     },
+    connectionTimeoutMillis: 3000,
   })
-
   client.connect()
   const query = [
     "SELECT description, added_at, type, img",
@@ -26,25 +21,29 @@ let endpoint = (req, res, next) => {
     "  WHERE ssm_key = $1",
   ].join(" ")
   client.query(query, [key], (err, data) => {
-    client.end()
     if (err) {
-      return next(
-        new InternalServerError(`Error connecting to database: ${err}`)
-      )
+      client.end()
+      reply.internalServerError(`Error connecting to database: ${err}`)
+      return
     }
     if (!data.rows.length) {
-      return next(new NotFoundError(`Could not find tree with id ${key}`))
+      client.end()
+      reply.notFound(`Could not find tree with id ${key}`)
+      return
     }
     let tree = data.rows[0]
-    res.json({
+    const treeRes = {
       type: tree.type.trim(),
       file: tree.img,
       desc: tree.description,
       added: tree.added_at,
       lat: tree.lat,
       lon: tree.lon,
-    })
-    return next()
+    }
+    client.end()
+    reply
+      .code(200)
+      .header("Content-Type", "application/json; charset=utf-8")
+      .send(treeRes)
   })
 }
-module.exports = endpoint

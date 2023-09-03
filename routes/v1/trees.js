@@ -1,31 +1,27 @@
-const { Client } = require("pg")
-const { InvalidArgumentError, InternalServerError } = require("restify-errors")
-const { isValidCoords } = require("./utils")
-const groupMap = require("./tree-group-map.json")
+import pg from "pg"
+import { isValidCoords } from "./utils.js"
+import groupMap from "./tree-group-map.js"
 
-let endpoint = (req, res, next) => {
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  })
-
+export default (req, reply) => {
   let bbox = [-90, -180, 90, 180]
-  if ("bbox" in req.params) {
-    bbox = req.params.bbox.split(",").map(x => parseFloat(x.trim()))
+  if ("bbox" in req.query) {
+    bbox = req.query.bbox.split(",").map(x => parseFloat(x.trim()))
 
     if (
       bbox.length < 4 ||
       !isValidCoords(bbox[0], bbox[1]) ||
       !isValidCoords(bbox[2], bbox[3])
     ) {
-      return next(
-        new InvalidArgumentError(`Invalid bbox argument: ${req.params.bbox}`)
-      )
+      reply.badRequest(`Invalid bbox argument: ${req.query.bbox}`)
     }
   }
 
+  const client = new pg.Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  })
   client.connect()
   const query = {
     name: "trees",
@@ -41,9 +37,7 @@ let endpoint = (req, res, next) => {
   }
   client.query(query, (err, data) => {
     if (err) {
-      return next(
-        new InternalServerError(`Error connecting to database: ${err}`)
-      )
+      reply.internalServerError(`Error connecting to database: ${err}`)
     }
     let trees = data.rows.map(x => ({
       key: x.ssm_key.trim(),
@@ -55,8 +49,9 @@ let endpoint = (req, res, next) => {
       group: groupMap[x.type.trim()] || "tree",
     }))
     client.end()
-    res.json(trees)
-    return next()
+    reply
+      .code(200)
+      .header("Content-Type", "application/json; charset=utf-8")
+      .send(trees)
   })
 }
-module.exports = endpoint

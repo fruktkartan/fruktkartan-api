@@ -99,3 +99,7 @@ implicit (unspecified) SRID (spatial reference id).
 
 For database definition, including the history table, trigger & function, see
 [`database.sql`](database.sql).
+
+## Changes
+
+From v2, a successful delete will return status `204` and no body (used to return `200` and a `{}` body)

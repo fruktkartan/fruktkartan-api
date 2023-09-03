@@ -7,6 +7,7 @@ CREATE TABLE trees (
     type character(32),
     added_by character varying(128),
     added_at timestamp without time zone DEFAULT now(),
+    flag_delete boolean default false,
     point geometry(Point) NOT NULL
 );
 

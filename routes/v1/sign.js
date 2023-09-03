@@ -1,15 +1,20 @@
 /**
  * Endpoint for retrieving temporary credentials for uploading an image to Amazon S3
  */
-const { getSignedRequest } = require("./s3")
-const murmurhash = require("murmurhash")
+import { getSignedRequest } from "./s3.js"
+import murmurhash from "murmurhash"
 
-module.exports = (req, res, next) => {
+export default (req, reply) => {
   const fileName = req.params["file-name"]
   const newFileName =
     murmurhash.v3(fileName, Date.now()) + "." + fileName.split(".").pop()
 
   getSignedRequest(newFileName, process.env.S3_BUCKET, process.env.S3_REGION)
-    .then(data => res.json(data))
-    .catch(error => next(error))
+    .then(data =>
+      reply
+        .code(200)
+        .header("Content-Type", "application/json; charset=utf-8")
+        .send(data)
+    )
+    .catch(error => reply.internalServerError(error))
 }

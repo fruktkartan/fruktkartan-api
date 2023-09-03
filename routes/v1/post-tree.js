@@ -1,28 +1,16 @@
 /**
  * Endpoint for updating an existing tree.
  */
-const { Client } = require("pg")
-const {
-  InvalidArgumentError,
-  MissingParameterError,
-  InternalServerError,
-  NotFoundError,
-} = require("restify-errors")
-const { isValidCoords, sanitizeText, userHash } = require("./utils")
+import pg from "pg"
+import { isValidCoords, sanitizeText, userHash } from "./utils.js"
 
-let endpoint = (req, res, next) => {
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  })
-
+export default (req, reply) => {
   if (!req.params.key) {
-    return next(new MissingParameterError("Missing key!"))
+    reply.badRequest("Missing key!")
   }
-
-  client.connect()
+  if (!req.body) {
+    reply.badRequest("Request body missing in call to post-tree!")
+  }
 
   let idx = 1
   let query = ["UPDATE trees SET added_at = now()"]
@@ -34,7 +22,7 @@ let endpoint = (req, res, next) => {
 
   const idx_noparams = idx
 
-  if ("type" in req.params) {
+  if ("type" in req.body) {
     // TODO should do some validation here? Allowing any tree type, for now.
     // Idea:
     // if (!validTreeTypes.includes(req.params.type)) {
@@ -43,29 +31,29 @@ let endpoint = (req, res, next) => {
     //   )
     // }
     query.push(`, type = $${idx}`)
-    values.push(req.params.type)
+    values.push(req.body.type)
     idx++
   }
 
-  if ("desc" in req.params) {
+  if ("desc" in req.body) {
     query.push(`, description = $${idx}`)
-    values.push(sanitizeText(req.params.desc || ""))
+    values.push(sanitizeText(req.body.desc || ""))
     idx++
   }
 
   // Expects req.params.file to be passed also when the image is deleted (which
   // the frontend does).
-  if ("file" in req.params) {
+  if ("file" in req.body) {
     query.push(`, img = $${idx}`)
-    values.push(req.params.file || "")
+    values.push(req.body.file || "")
     idx++
   }
 
-  const lat = req.params.lat || ""
-  const lon = req.params.lon || ""
-  if (lat || lon) {
-    if (!lat || !lon || !isValidCoords(lat, lon)) {
-      return next(new InvalidArgumentError("Invalid coordinates"))
+  if ("lat" in req.body && "lon" in req.body) {
+    const lat = req.body.lat
+    const lon = req.body.lon
+    if (!isValidCoords(lat, lon)) {
+      reply.badRequest(`Invalid coordinates: ${lat}, ${lon}`)
     }
     query.push(`, point = ST_MakePoint($${idx}, $${idx + 1})`)
     values.push(lon, lat)
@@ -73,7 +61,7 @@ let endpoint = (req, res, next) => {
   }
 
   if (idx == idx_noparams) {
-    return next(new MissingParameterError("Nothing to update"))
+    reply.badRequest("Nothing to update")
   }
 
   const key = req.params.key
@@ -81,17 +69,21 @@ let endpoint = (req, res, next) => {
   values.push(key)
   idx++
 
-  client.query(query.join(" "), values, (err, response) => {
-    client.end()
+  const client = new pg.Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  })
+  client.connect()
+  client.query(query.join(" "), values, (err, res) => {
     if (err) {
-      return next(
-        new InternalServerError(`Error connecting to database: ${err}`)
-      )
+      reply.internalServerError(`Error connecting to database: ${err}`)
     }
-    if (response.rowCount === 0) {
-      return next(new NotFoundError(`No tree found to update for key ${key}`))
+    if (!res.rowCount) {
+      reply.notFound(`Nothing found to update for key ${key}`)
     }
-    res.json({})
+    client.end()
+    reply.code(204).send()
   })
 }
-module.exports = endpoint

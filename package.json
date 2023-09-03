@@ -1,30 +1,30 @@
 {
   "name": "fruktkartan-api",
-  "version": "1.0.0-dev0",
+  "version": "2.0.0",
   "description": "Fruktkartan API",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "eslint . && PORT=8082 mocha test",
+    "test": "eslint . && tap test",
     "lint": "eslint --fix ."
   },
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.1450.0",
+    "fastify": "^4.22.2",
+    "@fastify/cors": "^8.3.0",
+    "@fastify/sensible": "^5.2.0",
+    "@fastify/static": "^6.11.0",
+    "@aws-sdk/client-s3": "^3.400.0",
     "dotenv": "16.3.1",
     "murmurhash": "1.0.0",
-    "pg": "^8.11.3",
-    "restify": "11.1.0",
-    "restify-cors-middleware": "1.1.1",
-    "restify-errors": "8.0.2"
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-mocha": "^10.1.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "mocha": "^10.2.0",
     "prettier": "^3.0.3",
-    "supertest": "^6.3.3"
+    "tap": "^16.3.8"
   }
 }

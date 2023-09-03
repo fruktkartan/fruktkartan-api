@@ -1,20 +1,20 @@
-const murmurhash = require("murmurhash")
+import murmurhash from "murmurhash"
 
-let utils = {}
-
-utils.isValidCoords = (lat, lon) => {
+const isValidCoords = (lat, lon) => {
   return (
-    parseFloat(lat) &&
-    parseFloat(lon) &&
+    !isNaN(parseFloat(lat)) &&
+    !isNaN(parseFloat(lon)) &&
     parseFloat(lat) >= -90 &&
-    parseFloat(lat) <= 90
+    parseFloat(lat) <= 90 &&
+    parseFloat(lon) >= -180 &&
+    parseFloat(lon) <= 180
   )
 }
 
 /**
  * Remove things that look like html tags from text.
  */
-utils.sanitizeText = rawText => {
+const sanitizeText = rawText => {
   let text = rawText.replace(/<[^>]+>/g, "")
   text = text.normalize("NFC") // Unicode normalize
   return text
@@ -23,10 +23,10 @@ utils.sanitizeText = rawText => {
 /**
  * Hash a user IP
  */
-utils.userHash = req => {
+const userHash = req => {
   return murmurhash.v3(
     req.headers["x-forwarded-for"] || req.connection.remoteAddress
   )
 }
 
-module.exports = utils
+export { isValidCoords, sanitizeText, userHash }

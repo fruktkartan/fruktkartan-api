@@ -2,9 +2,7 @@
  * Utility functions for AWS S3 interaction
  *
  */
-const { InternalServerError } = require("restify-errors")
-const { S3 } = require("aws-sdk")
-
+import { S3 } from "@aws-sdk/client-s3"
 /**
  * Create all the data a client need to upload a file to AWS S3.
  */
@@ -17,9 +15,7 @@ function getSignedRequest(key, bucket, region) {
     }
     s3.getSignedUrlPromise("putObject", s3Params, (err, data) => {
       if (err) {
-        reject(
-          new InternalServerError(`Error creating AWS S3 upload token: ${err}`)
-        )
+        reject(new Error(`Error creating AWS S3 upload token: ${err}`))
       }
       resolve({
         filename: key,
@@ -30,4 +26,4 @@ function getSignedRequest(key, bucket, region) {
   })
 }
 
-module.exports = { getSignedRequest }
+export { getSignedRequest }

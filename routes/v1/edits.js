@@ -1,14 +1,12 @@
-const { Client } = require("pg")
-const { InternalServerError } = require("restify-errors")
+import pg from "pg"
 
-let endpoint = (req, res, next) => {
-  const client = new Client({
+export default (req, reply) => {
+  const client = new pg.Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
     },
   })
-
   client.connect()
   let query = [
     "SELECT ssm_key, description, img, type",
@@ -20,16 +18,15 @@ let endpoint = (req, res, next) => {
   client.query(query, (err, data) => {
     client.end()
     if (err) {
-      return next(
-        new InternalServerError(`Error connecting to database: ${err}`)
-      )
+      reply.internalServerError(`Error connecting to database: ${err}`)
     }
     let edits = data.rows.map(x => {
       x.ssm_key = x.ssm_key.trim()
       return x
     })
-    res.json(edits)
-    return next()
+    reply
+      .code(200)
+      .header("Content-Type", "application/json; charset=utf-8")
+      .send(edits)
   })
 }
-module.exports = endpoint

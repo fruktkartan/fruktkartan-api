@@ -17,12 +17,17 @@ export default (req, reply) => {
   }
   client
     .query(query)
-    .then(res =>
+    .then(res => {
+      let flags = res.rows.map(x => ({
+        ...x,
+        tree: x.tree.trim(),
+        flag: x.flag.trim(),
+      }))
       reply
         .code(200)
         .header("Content-Type", "application/json; charset=utf-8")
-        .send(res.rows)
-    )
+        .send(flags)
+    })
     .catch(err =>
       reply.internalServerError(`Error connecting to database: ${err}`)
     )

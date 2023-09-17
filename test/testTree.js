@@ -18,6 +18,11 @@ test("Deleting a tree", async t => {
 test("Asking for a tree", async t => {
   let response = await app.inject({
     method: "GET",
+    url: "/tree/2630680129",
+  })
+  t.equal(response.statusCode, 200, "should find a known tree")
+  response = await app.inject({
+    method: "GET",
     url: "/tree/",
   })
   t.equal(

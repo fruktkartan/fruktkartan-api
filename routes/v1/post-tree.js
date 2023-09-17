@@ -77,13 +77,13 @@ export default (req, reply) => {
   })
   client.connect()
   client.query(query.join(" "), values, (err, res) => {
+    client.end()
     if (err) {
       reply.internalServerError(`Error connecting to database: ${err}`)
     }
     if (!res.rowCount) {
       reply.notFound(`Nothing found to update for key ${key}`)
     }
-    client.end()
     reply.code(204).send()
   })
 }

@@ -1,14 +1,23 @@
 CREATE EXTENSION postgis;
 
-CREATE TABLE trees (
-    ssm_key character(64) NOT NULL,
-    description character varying(1024),
-    img character varying(255),
-    type character(32),
-    added_by character varying(128),
-    added_at timestamp without time zone DEFAULT now(),
-    flag_delete boolean default false,
-    point geometry(Point) NOT NULL
+CREATE TABLE IF NOT EXISTS flags (
+  id serial,
+  flagged_by text DEFAULT current_user,
+  flagged_at timestamp without time zone DEFAULT now(),
+  tree character(64) NOT NULL REFERENCES trees(ssm_key),
+  flag character(16) NOT NULL,
+  reason character varying(1024),
+  PRIMARY KEY (tree, flag)
+);
+
+CREATE TABLE IF NOT EXISTS trees (
+  ssm_key character(64) NOT NULL,
+  description character varying(1024),
+  img character varying(255),
+  type character(32),
+  added_by character varying(128),
+  added_at timestamp without time zone DEFAULT now(),
+  point geometry(Point) NOT NULL
 );
 
 ALTER TABLE ONLY trees ADD CONSTRAINT trees_pkey PRIMARY KEY (ssm_key);

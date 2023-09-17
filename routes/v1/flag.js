@@ -2,28 +2,23 @@
  * Flag a tree for moderation
  */
 import pg from "pg"
+import { sanitizeText, userHash } from "./utils.js"
+
+const allowedFlags = ["delete", "test"]
 
 export default (req, reply) => {
   if (!req.params.key) {
     reply.badRequest("Missing key!")
   }
-  if (!req.params.action) {
-    reply.badRequest("Missing action!")
+  if (!req.params.flag) {
+    reply.badRequest("Missing flag!")
   }
-  let flag = "true"
-  if (req.body && "flag" in req.body) {
-    flag = req.body.flag
+  const flag = req.params.flag
+  if (!allowedFlags.includes(flag)) {
+    reply.badRequest(`Invalid flag (${flag}). Must be one of ${allowedFlags}`)
   }
-  if (!(flag === "true" || flag === "false")) {
-    reply.badRequest("Invalid flag. Must be 'true' or 'false'")
-  }
-  const action = req.params.action
-  const allowedActions = ["delete"]
-  if (!allowedActions.includes(action)) {
-    reply.badRequest(
-      `Invalid action (${action}). Must be one of ${allowedActions}`
-    )
-  }
+  const reason = req.query.reason || ""
+  const user = userHash(req)
   const client = new pg.Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -33,19 +28,24 @@ export default (req, reply) => {
 
   client.connect()
   const query = [
-    "UPDATE trees",
-    `SET flag_${action} = ${flag}`,
-    "WHERE ssm_key = $1",
+    "INSERT INTO flags",
+    "  (flagged_by, tree, flag, reason)",
+    "  VALUES ($1, $2, $3, $4)",
   ].join(" ")
 
-  client.query(query, [req.params.key], (err, res) => {
-    if (err) {
-      reply.internalServerError(`Error connecting to database: ${err}`)
+  client.query(
+    query,
+    [user, req.params.key, flag, sanitizeText(reason)],
+    (err, res) => {
+      if (err) {
+        reply.internalServerError(
+          "Temporary technical error, or the tree has already been deleted or flagged."
+        )
+      } else if (res && !res.rowCount) {
+        reply.notFound(`Nothing to update for tree ${req.params.key}`)
+      }
+      client.end()
+      reply.code(204).send()
     }
-    if (!res.rowCount) {
-      reply.notFound(`Nothing found to flag for key ${req.params.key}`)
-    }
-    client.end()
-    reply.code(204).send()
-  })
+  )
 }

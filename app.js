@@ -11,6 +11,8 @@ import deleteTree from "./routes/v1/delete-tree.js"
 import putTree from "./routes/v1/put-tree.js"
 import postTree from "./routes/v1/post-tree.js"
 import flag from "./routes/v1/flag.js"
+import flags from "./routes/v1/flags.js"
+import deleteFlag from "./routes/v1/delete-flag.js"
 
 import path from "path"
 import url from "url"
@@ -91,7 +93,9 @@ const build = async function (opts = {}) {
   fastify.delete("/tree/:key", deleteTree)
   fastify.put("/tree/:key", putTree)
   fastify.post("/tree/:key", postTree)
-  fastify.post("/flag/:action/:key", flag)
+  fastify.get("/flags", flags)
+  fastify.post("/flag/:key/:flag", flag)
+  fastify.delete("/flag/:key/:flag", deleteFlag)
 
   return fastify
 }

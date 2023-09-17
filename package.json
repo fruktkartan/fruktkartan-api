@@ -11,17 +11,17 @@
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
-    "fastify": "^4.22.2",
+    "@aws-sdk/client-s3": "^3.414.0",
     "@fastify/cors": "^8.3.0",
-    "@fastify/sensible": "^5.2.0",
-    "@fastify/static": "^6.11.0",
-    "@aws-sdk/client-s3": "^3.400.0",
+    "@fastify/sensible": "^5.3.0",
+    "@fastify/static": "^6.11.2",
     "dotenv": "16.3.1",
+    "fastify": "^4.23.2",
     "murmurhash": "1.0.0",
     "pg": "^8.11.3"
   },
   "devDependencies": {
-    "eslint": "^8.48.0",
+    "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.3",

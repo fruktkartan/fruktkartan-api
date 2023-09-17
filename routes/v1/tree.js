@@ -15,7 +15,7 @@ export default (req, reply) => {
   })
   client.connect()
   const query = [
-    "SELECT flag_delete, description, added_at, type, img",
+    "SELECT description, added_at, type, img",
     "       , ST_Y(point) AS lat, ST_X(point) AS lon",
     "  FROM trees",
     "  WHERE ssm_key = $1",
@@ -36,9 +36,6 @@ export default (req, reply) => {
         added: tree.added_at,
         lat: tree.lat,
         lon: tree.lon,
-        flags: {
-          delete: tree.flag_delete,
-        },
       }
       reply
         .code(200)

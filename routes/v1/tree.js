@@ -20,33 +20,33 @@ export default (req, reply) => {
     "  FROM trees",
     "  WHERE ssm_key = $1",
   ].join(" ")
-  client.query(query, [key], (err, data) => {
-    if (err) {
-      client.end()
+  client
+    .query(query, [key])
+    .then(data => {
+      if (!data.rows.length) {
+        reply.notFound(`Could not find tree with id ${key}`)
+        return
+      }
+
+      let tree = data.rows[0]
+      const treeRes = {
+        type: tree.type.trim(),
+        file: tree.img,
+        desc: tree.description,
+        added: tree.added_at,
+        lat: tree.lat,
+        lon: tree.lon,
+        flags: {
+          delete: tree.flag_delete,
+        },
+      }
+      reply
+        .code(200)
+        .header("Content-Type", "application/json; charset=utf-8")
+        .send(treeRes)
+    })
+    .catch(err =>
       reply.internalServerError(`Error connecting to database: ${err}`)
-      return
-    }
-    if (!data.rows.length) {
-      client.end()
-      reply.notFound(`Could not find tree with id ${key}`)
-      return
-    }
-    let tree = data.rows[0]
-    const treeRes = {
-      type: tree.type.trim(),
-      file: tree.img,
-      desc: tree.description,
-      added: tree.added_at,
-      lat: tree.lat,
-      lon: tree.lon,
-      flags: {
-        delete: tree.flag_delete,
-      },
-    }
-    client.end()
-    reply
-      .code(200)
-      .header("Content-Type", "application/json; charset=utf-8")
-      .send(treeRes)
-  })
+    )
+    .finally(() => client.end())
 }

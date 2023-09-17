@@ -35,23 +35,25 @@ export default (req, reply) => {
     //       lon_min, lat_min, lon_max, lat_max
     values: [bbox[1], bbox[0], bbox[3], bbox[2]],
   }
-  client.query(query, (err, data) => {
-    if (err) {
+  client
+    .query(query)
+    .then(data => {
+      let trees = data.rows.map(x => ({
+        key: x.ssm_key.trim(),
+        lat: x.lat,
+        lng: x.lon,
+        desc: x.description !== "",
+        img: x.img !== "",
+        type: x.type.trim(),
+        group: groupMap[x.type.trim()] || "tree",
+      }))
+      reply
+        .code(200)
+        .header("Content-Type", "application/json; charset=utf-8")
+        .send(trees)
+    })
+    .catch(err =>
       reply.internalServerError(`Error connecting to database: ${err}`)
-    }
-    let trees = data.rows.map(x => ({
-      key: x.ssm_key.trim(),
-      lat: x.lat,
-      lng: x.lon,
-      desc: x.description !== "",
-      img: x.img !== "",
-      type: x.type.trim(),
-      group: groupMap[x.type.trim()] || "tree",
-    }))
-    client.end()
-    reply
-      .code(200)
-      .header("Content-Type", "application/json; charset=utf-8")
-      .send(trees)
-  })
+    )
+    .finally(() => client.end())
 }

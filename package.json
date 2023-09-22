@@ -11,8 +11,8 @@
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.414.0",
-    "@fastify/cors": "^8.3.0",
+    "@aws-sdk/client-s3": "^3.417.0",
+    "@fastify/cors": "^8.4.0",
     "@fastify/sensible": "^5.3.0",
     "@fastify/static": "^6.11.2",
     "dotenv": "16.3.1",

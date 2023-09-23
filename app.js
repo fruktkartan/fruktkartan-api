@@ -70,7 +70,7 @@ const build = async function (opts = {}) {
       "https://quite--fruktkartan.netlify.com",
       "https://quite--fruktkartan.netlify.app",
     ],
-    methods: ["POST", "PUT", "OPTIONS"],
+    methods: ["POST", "PUT", "DELETE", "OPTIONS"],
     preflight: true,
     preflightMaxAge: 5,
     strictPreflight: true,

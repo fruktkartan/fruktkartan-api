@@ -13,6 +13,7 @@ import postTree from "./routes/v1/post-tree.js"
 import flag from "./routes/v1/flag.js"
 import flags from "./routes/v1/flags.js"
 import deleteFlag from "./routes/v1/delete-flag.js"
+import sign from "./routes/v1/sign.js"
 
 import path from "path"
 import url from "url"
@@ -96,6 +97,7 @@ const build = async function (opts = {}) {
   fastify.get("/flags", flags)
   fastify.post("/flag/:key/:flag", flag)
   fastify.delete("/flag/:key/:flag", deleteFlag)
+  fastify.post("/sign", sign)
 
   return fastify
 }

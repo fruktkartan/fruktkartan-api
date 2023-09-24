@@ -91,7 +91,7 @@ const build = async function (opts = {}) {
   fastify.get("/trees", getTrees)
   fastify.get("/tree/:key", getTree)
   fastify.delete("/tree/:key", deleteTree)
-  fastify.put("/tree/:key", putTree)
+  fastify.put("/tree", putTree)
   fastify.post("/tree/:key", postTree)
   fastify.get("/flags", flags)
   fastify.post("/flag/:key/:flag", flag)

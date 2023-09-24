@@ -5,7 +5,7 @@ import { getSignedRequest } from "./s3.js"
 import murmurhash from "murmurhash"
 
 export default (req, reply) => {
-  const fileName = req.params["file-name"]
+  const fileName = req.body["file-name"]
   const newFileName =
     murmurhash.v3(fileName, Date.now()) + "." + fileName.split(".").pop()
 

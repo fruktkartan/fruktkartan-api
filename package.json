@@ -11,7 +11,7 @@
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.417.0",
+    "@aws-sdk/client-s3": "^3.418.0",
     "@aws-sdk/s3-request-presigner": "^3.418.0",
     "@fastify/cors": "^8.4.0",
     "@fastify/sensible": "^5.3.0",
@@ -22,7 +22,7 @@
     "pg": "^8.11.3"
   },
   "devDependencies": {
-    "eslint": "^8.49.0",
+    "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.3",

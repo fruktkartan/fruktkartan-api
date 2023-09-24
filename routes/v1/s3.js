@@ -3,19 +3,19 @@
  *
  */
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3"
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 
 /**
  * Create all the data a client need to upload a file to AWS S3.
  */
 async function getSignedRequest(key, bucket, region) {
   const clientParams = { region }
-  const getObjectParams = {
+  const putObjectParams = {
     Bucket: bucket,
     Key: key,
   }
   const client = new S3Client(clientParams)
-  const command = new GetObjectCommand(getObjectParams)
+  const command = new PutObjectCommand(putObjectParams)
   const url = await getSignedUrl(client, command, { expiresIn: 3600 })
   return {
     filename: key,

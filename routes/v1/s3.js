@@ -2,28 +2,26 @@
  * Utility functions for AWS S3 interaction
  *
  */
-import { S3 } from "@aws-sdk/client-s3"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3"
+
 /**
  * Create all the data a client need to upload a file to AWS S3.
  */
-function getSignedRequest(key, bucket, region) {
-  return new Promise((resolve, reject) => {
-    const s3 = new S3({ signatureVersion: "v4", region })
-    const s3Params = {
-      Bucket: bucket,
-      Key: key,
-    }
-    s3.getSignedUrlPromise("putObject", s3Params, (err, data) => {
-      if (err) {
-        reject(new Error(`Error creating AWS S3 upload token: ${err}`))
-      }
-      resolve({
-        filename: key,
-        signedRequest: data,
-        url: `https://${bucket}.s3.amazonaws.com/${key}`,
-      })
-    })
-  })
+async function getSignedRequest(key, bucket, region) {
+  const clientParams = { region }
+  const getObjectParams = {
+    Bucket: bucket,
+    Key: key,
+  }
+  const client = new S3Client(clientParams)
+  const command = new GetObjectCommand(getObjectParams)
+  const url = await getSignedUrl(client, command, { expiresIn: 3600 })
+  return {
+    filename: key,
+    signedRequest: url,
+    url: `https://${bucket}.s3.amazonaws.com/${key}`,
+  }
 }
 
 export { getSignedRequest }

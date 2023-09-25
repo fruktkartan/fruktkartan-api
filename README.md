@@ -10,7 +10,7 @@ The API is hosted at https://fruktkartan-api.herokuapp.com/, and a development v
 ## Installing
 
 ```sh
-git clone git@github.com:rotsee/fruktkartan-api.git
+git clone git@github.com:fruktkartan/fruktkartan-api.git
 cd fruktkartan-api
 npm install
 ```

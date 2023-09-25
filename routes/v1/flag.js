@@ -17,7 +17,7 @@ export default (req, reply) => {
   if (!allowedFlags.includes(flag)) {
     reply.badRequest(`Invalid flag (${flag}). Must be one of ${allowedFlags}`)
   }
-  const reason = req.body.reason || ""
+  const reason = req.body?.reason || ""
   const user = userHash(req)
   const client = new pg.Client({
     connectionString: process.env.DATABASE_URL,

@@ -1,4 +1,4 @@
-[![Node CI](https://github.com/fruktkartan/fruktkartan-api/workflows/Node%20CI/badge.svg)](https://github.com/fruktkartan/fruktkartan-api/actions)
+[![Node CI](https://github.com/fruktkartan/fruktkartan-api/actions/workflows/nodejs.yml/badge.svg?branch=master)](https://github.com/fruktkartan/fruktkartan-api/actions/workflows/nodejs.yml)
 
 New API (fall 2019) for [fruktkartan.se](http://fruktkartan.se). The API is
 hosted at Heroku. Data is stored in a PostgresSQL database with the PostGIS

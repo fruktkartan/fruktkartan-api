@@ -11,21 +11,21 @@
   "author": "Leo Wallentin",
   "license": "MIT",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.418.0",
-    "@aws-sdk/s3-request-presigner": "^3.418.0",
-    "@fastify/cors": "^8.4.0",
-    "@fastify/sensible": "^5.3.0",
-    "@fastify/static": "^6.11.2",
-    "dotenv": "16.3.1",
-    "fastify": "^4.23.2",
+    "@aws-sdk/client-s3": "^3.688.0",
+    "@aws-sdk/s3-request-presigner": "^3.688.0",
+    "@fastify/cors": "8.5.0",
+    "@fastify/sensible": "5.6.0",
+    "@fastify/static": "6.12.0",
+    "dotenv": "16.4.5",
+    "fastify": "4.28.1",
     "murmurhash": "1.0.0",
-    "pg": "^8.11.3"
+    "pg": "8.13.1"
   },
   "devDependencies": {
-    "eslint": "^8.50.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "prettier": "^3.0.3",
-    "tap": "^16.3.8"
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
+    "tap": "^16.3.10"
   }
 }

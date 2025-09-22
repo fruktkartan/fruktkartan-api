@@ -59,3 +59,22 @@ $function$;
 
 CREATE TRIGGER trees_history BEFORE INSERT OR UPDATE OR DELETE ON trees
   FOR EACH ROW EXECUTE PROCEDURE history_trigger();
+
+DROP TRIGGER IF EXISTS flags_history ON flags;
+
+CREATE OR REPLACE FUNCTION flagshistory_trigger()
+ RETURNS trigger
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+AS $function$
+  BEGIN
+    IF TG_OP = 'DELETE' THEN
+      INSERT INTO history (tab, op, old_json)
+             VALUES (TG_RELNAME, TG_OP, row_to_json(OLD));
+      RETURN OLD;
+    END IF;
+  END;
+$function$;
+
+CREATE TRIGGER flags_history BEFORE DELETE ON flags
+  FOR EACH ROW EXECUTE PROCEDURE flagshistory_trigger();

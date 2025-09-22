@@ -96,7 +96,7 @@ files_el.addEventListener("change", () => {
 A Postgres database with PostGIS 2.0+ is required, (at least) due to relying on
 implicit (unspecified) SRID (spatial reference id).
 
-For database definition, including the history table, trigger & function, see
+For database definition, including the history table, triggers & functions, see
 [`database.sql`](database.sql).
 
 ## Changes

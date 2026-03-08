@@ -1,6 +1,8 @@
 [![Node CI](https://github.com/fruktkartan/fruktkartan-api/actions/workflows/nodejs.yml/badge.svg?branch=master)](https://github.com/fruktkartan/fruktkartan-api/actions/workflows/nodejs.yml)
 
-New API (fall 2019) for [fruktkartan.se](http://fruktkartan.se). The API is
+THIS API IS NO LONGER USED. Backend and frontend are now both in the [fruktkartan/fruktkartan](https://github.com/fruktkartan/fruktkartan) repo, and served in a single Nuxt app.
+
+API for [fruktkartan.se](http://fruktkartan.se). The API is
 hosted at Heroku. Data is stored in a PostgresSQL database with the PostGIS
 extension. Files are stored at S3, where they are validated, cropped and
 checked by a separate AWS Lambda Python script.
